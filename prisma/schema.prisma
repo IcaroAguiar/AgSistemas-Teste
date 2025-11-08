@@ -52,36 +52,37 @@ enum InvoiceStatus {
 }
 
 model Member {
-  id        String        @id @default(uuid())
+  id        String       @id @default(uuid())
   name      String
-  email     String        @unique
+  email     String       @unique
   company   String?
-  role      MemberRole    @default(MEMBER)
-  status    MemberStatus  @default(ACTIVE)
+  role      MemberRole   @default(MEMBER)
+  status    MemberStatus @default(ACTIVE)
   joinedAt  DateTime?
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
 
-  announcements     Announcement[]
-  outgoingReferrals Referral[]      @relation("ref_from")
-  incomingReferrals Referral[]      @relation("ref_to")
-  gratitudesSent    Gratitude[]     @relation("gratitude_from")
+  announcements      Announcement[]
+  outgoingReferrals  Referral[]     @relation("ref_from")
+  incomingReferrals  Referral[]     @relation("ref_to")
+  gratitudesSent     Gratitude[]    @relation("gratitude_from")
   gratitudesReceived Gratitude[]    @relation("gratitude_to")
-  attendances       Attendance[]
-  invoices          Invoice[]
-  oneOnOnesA        OneOnOne[]      @relation("one_on_one_a")
-  oneOnOnesB        OneOnOne[]      @relation("one_on_one_b")
+  attendances        Attendance[]
+  invoices           Invoice[]
+  oneOnOnesA         OneOnOne[]     @relation("one_on_one_a")
+  oneOnOnesB         OneOnOne[]     @relation("one_on_one_b")
 }
 
 model Intention {
-  id        String          @id @default(uuid())
-  name      String
-  email     String
-  company   String
-  status    IntentionStatus @default(PENDING)
-  reason    String?
-  createdAt DateTime        @default(now())
-  updatedAt DateTime        @updatedAt
+  id         String          @id @default(uuid())
+  name       String
+  email      String
+  company    String
+  motivation String?
+  status     IntentionStatus @default(PENDING)
+  reason     String?
+  createdAt  DateTime        @default(now())
+  updatedAt  DateTime        @updatedAt
 
   invitation Invitation?
 
@@ -89,12 +90,12 @@ model Intention {
 }
 
 model Invitation {
-  id          String     @id @default(uuid())
-  intentionId String     @unique
-  tokenHash   String     @unique
+  id          String    @id @default(uuid())
+  intentionId String    @unique
+  tokenHash   String    @unique
   expiresAt   DateTime
   usedAt      DateTime?
-  createdAt   DateTime   @default(now())
+  createdAt   DateTime  @default(now())
 
   intention Intention @relation(fields: [intentionId], references: [id], onDelete: Cascade)
 }
@@ -121,12 +122,12 @@ model Meeting {
 }
 
 model Attendance {
-  id         String           @id @default(uuid())
-  meetingId  String
-  memberId   String
-  status     AttendanceStatus @default(PRESENT)
-  checkinAt  DateTime?
-  createdAt  DateTime         @default(now())
+  id        String           @id @default(uuid())
+  meetingId String
+  memberId  String
+  status    AttendanceStatus @default(PRESENT)
+  checkinAt DateTime?
+  createdAt DateTime         @default(now())
 
   meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
   member  Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
@@ -145,8 +146,8 @@ model Referral {
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
 
-  fromMember Member @relation("ref_from", fields: [fromMemberId], references: [id], onDelete: Cascade)
-  toMember   Member @relation("ref_to", fields: [toMemberId], references: [id], onDelete: Cascade)
+  fromMember Member      @relation("ref_from", fields: [fromMemberId], references: [id], onDelete: Cascade)
+  toMember   Member      @relation("ref_to", fields: [toMemberId], references: [id], onDelete: Cascade)
   gratitudes Gratitude[]
 }
 
@@ -159,8 +160,8 @@ model Gratitude {
   amount       Float?
   createdAt    DateTime @default(now())
 
-  fromMember Member   @relation("gratitude_from", fields: [fromMemberId], references: [id], onDelete: Cascade)
-  toMember   Member   @relation("gratitude_to", fields: [toMemberId], references: [id], onDelete: Cascade)
+  fromMember Member    @relation("gratitude_from", fields: [fromMemberId], references: [id], onDelete: Cascade)
+  toMember   Member    @relation("gratitude_to", fields: [toMemberId], references: [id], onDelete: Cascade)
   referral   Referral? @relation(fields: [referralId], references: [id])
 }
 
