@@ -1,6 +1,7 @@
 import Link from "next/link";
 
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -13,6 +14,11 @@ import {
 export default function Page() {
 	return (
 		<main className="flex flex-1 flex-col gap-16 px-6 py-16 sm:px-10 lg:px-16">
+			{/* Header com toggle de tema */}
+			<div className="flex justify-end">
+				<ThemeToggle />
+			</div>
+
 			{/* Hero Section */}
 			<section className="mx-auto w-full max-w-5xl text-center">
 				<div className="flex justify-center mb-6">

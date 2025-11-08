@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Logo } from "@/components/Logo";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import {
 	Card,
 	CardContent,
@@ -231,12 +232,15 @@ export default function DashboardPage() {
 					<div className="flex items-center gap-4">
 						<Logo width={64} height={64} showText />
 					</div>
-					<Button variant="outline" asChild>
-						<Link href="/">
-							<Home className="h-4 w-4 mr-2" />
-							Voltar ao Início
-						</Link>
-					</Button>
+					<div className="flex items-center gap-2">
+						<ThemeToggle />
+						<Button variant="outline" asChild>
+							<Link href="/">
+								<Home className="h-4 w-4 mr-2" />
+								Voltar ao Início
+							</Link>
+						</Button>
+					</div>
 				</div>
 				<div className="mt-6 space-y-4">
 					<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">

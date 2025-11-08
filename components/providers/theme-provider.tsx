@@ -10,6 +10,7 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
 			defaultTheme="dark"
 			enableSystem={false}
 			disableTransitionOnChange
+			storageKey="agsistemas-theme"
 			{...props}
 		>
 			{children}
