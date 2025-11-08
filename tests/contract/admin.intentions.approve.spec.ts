@@ -44,7 +44,7 @@ describe("POST /api/admin/intentions/[id]/approve", () => {
 		expect(response.status).toBe(200);
 		expect(body).toMatchObject({
 			message: "invitation created",
-			url: expect.stringContaining("/signup/"),
+			url: expect.stringContaining("/cadastro/"),
 			expiresAt: expect.any(String),
 		});
 

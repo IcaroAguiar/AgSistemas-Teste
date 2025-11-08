@@ -44,7 +44,7 @@ Aprova intenção e gera convite (admin).
 Response 200:
 
 ```json
-{ "message": "invitation created", "url": "https://app/signup/TOKEN" }
+{ "message": "invitation created", "url": "https://app/cadastro/TOKEN" }
 ```
 
 ### POST /api/admin/intentions/{id}/reject

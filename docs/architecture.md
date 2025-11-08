@@ -221,7 +221,7 @@ app/
 ├── admin/                         # Área administrativa (protegida por env)
 │   ├── page.tsx                   # Lista intenções + ações
 │   └── announcements/page.tsx     # CRUD de avisos
-├── signup/[token]/page.tsx        # Cadastro completo via token
+├── cadastro/[token]/page.tsx        # Cadastro completo via token
 ├── dashboard/page.tsx             # KPIs do membro
 ├── meetings/page.tsx              # Lista reuniões + check-in
 ├── referrals/page.tsx             # Indicações (listar/criar/atualizar status)
