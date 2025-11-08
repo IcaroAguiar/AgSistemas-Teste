@@ -1,7 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { toast } from "sonner";
+import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -276,7 +278,17 @@ export default function AdministracaoPage() {
 	return (
 		<main className="flex flex-1 flex-col gap-8 px-6 py-16 sm:px-10 lg:px-16">
 			<section className="mx-auto w-full max-w-7xl">
-				<div className="space-y-4">
+				<div className="flex items-center justify-between mb-4">
+					<div className="flex items-center gap-4">
+						<Logo width={48} height={48} showText />
+					</div>
+					<Button variant="outline" asChild>
+						<Link href="/">
+							Voltar ao Início
+						</Link>
+					</Button>
+				</div>
+				<div className="mt-6 space-y-4">
 					<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
 						Área Administrativa
 					</h1>

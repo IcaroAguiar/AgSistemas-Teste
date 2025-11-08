@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +15,16 @@ export default function Page() {
 		<main className="flex flex-1 flex-col gap-16 px-6 py-16 sm:px-10 lg:px-16">
 			{/* Hero Section */}
 			<section className="mx-auto w-full max-w-5xl text-center">
+				<div className="flex justify-center mb-6">
+					<Image
+						src="/images/logo.png"
+						alt="AgSistemas Logo"
+						width={120}
+						height={120}
+						className="object-contain"
+						priority
+					/>
+				</div>
 				<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
 					AgSistemas
 				</h1>

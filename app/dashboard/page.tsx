@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Logo } from "@/components/Logo";
 import {
 	Card,
 	CardContent,
@@ -227,13 +228,8 @@ export default function DashboardPage() {
 		<main className="flex flex-1 flex-col gap-8 px-6 py-16 sm:px-10 lg:px-16">
 			<section className="mx-auto w-full max-w-7xl">
 				<div className="flex items-center justify-between mb-4">
-					<div className="space-y-4">
-						<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
-							Dashboard
-						</h1>
-						<p className="text-lg text-muted-foreground">
-							Visão geral das métricas do mês atual
-						</p>
+					<div className="flex items-center gap-4">
+						<Logo width={48} height={48} showText />
 					</div>
 					<Button variant="outline" asChild>
 						<Link href="/">
@@ -241,6 +237,14 @@ export default function DashboardPage() {
 							Voltar ao Início
 						</Link>
 					</Button>
+				</div>
+				<div className="mt-6 space-y-4">
+					<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+						Dashboard
+					</h1>
+					<p className="text-lg text-muted-foreground">
+						Visão geral das métricas do mês atual
+					</p>
 				</div>
 
 				{error && (

@@ -11,7 +11,11 @@ const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 export const metadata: Metadata = {
 	title: "AgSistemas • Plataforma de Networking",
 	description:
-		"Gestão de membros, indicações, comunicação e financeiro em um único painel.",
+		"Gestão de membros, indicações, comunicação e financeiro em um único painel",
+	icons: {
+		icon: "/images/logo.png",
+		apple: "/images/logo.png",
+	},
 };
 
 export default function RootLayout({
