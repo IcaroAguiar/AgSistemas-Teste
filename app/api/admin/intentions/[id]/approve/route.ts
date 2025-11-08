@@ -23,7 +23,7 @@ export async function POST(
 			// Em produção, enviar email com token
 			// Por enquanto, retornar URL no response
 			const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
-			const signupUrl = `${baseUrl}/signup/${token}`;
+			const signupUrl = `${baseUrl}/cadastro/${token}`;
 
 			logger.info("Intenção aprovada", {
 				requestId,
