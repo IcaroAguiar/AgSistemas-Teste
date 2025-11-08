@@ -14,35 +14,39 @@ interface LogoProps {
 export function Logo({ width = 40, height = 40, className = "", showText = false }: LogoProps) {
 	const [imageError, setImageError] = useState(false);
 
-	// Se a imagem não carregar, mostrar apenas o texto
-	if (imageError) {
-		return (
-			<Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-				<div
-					className={`flex items-center justify-center bg-primary/20 rounded-lg ${className}`}
-					style={{ width, height }}
-				>
-					<span className="text-primary font-bold text-sm">AG</span>
-				</div>
-				{showText && (
-					<span className="text-xl font-semibold text-white">AgSistemas</span>
-				)}
-			</Link>
-		);
-	}
+	// Fallback quando a imagem não carregar
+	const fallbackLogo = (
+		<div
+			className={`flex items-center justify-center bg-gradient-to-br from-primary/30 to-primary/10 rounded-lg border border-primary/20 ${className}`}
+			style={{ width, height, minWidth: width, minHeight: height }}
+		>
+			<span className="text-primary font-bold" style={{ fontSize: `${width * 0.4}px` }}>
+				AG
+			</span>
+		</div>
+	);
 
 	return (
 		<Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
-			<Image
-				src="/images/logo.png"
-				alt="AgSistemas Logo"
-				width={width}
-				height={height}
-				className={`object-contain ${className}`}
-				priority={showText}
-				onError={() => setImageError(true)}
-				unoptimized
-			/>
+			{imageError ? (
+				fallbackLogo
+			) : (
+				<Image
+					src="/images/logo.png"
+					alt="AgSistemas Logo"
+					width={width}
+					height={height}
+					className={`object-contain ${className}`}
+					priority={showText}
+					onError={() => setImageError(true)}
+					onLoadingComplete={(result) => {
+						// Se a imagem não carregar, o onError será chamado
+						if (result.naturalWidth === 0) {
+							setImageError(true);
+						}
+					}}
+				/>
+			)}
 			{showText && (
 				<span className="text-xl font-semibold text-white">AgSistemas</span>
 			)}
