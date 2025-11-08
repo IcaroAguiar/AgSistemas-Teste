@@ -31,6 +31,7 @@ tests/
 **Tecnologias**: Jest + supertest (via helpers customizados)
 
 **Exemplos**:
+
 - `intentions.post.spec.ts` - Valida POST /api/intentions
 - `admin.intentions.get.spec.ts` - Valida GET /api/admin/intentions
 - `admin.intentions.approve.spec.ts` - Valida POST /api/admin/intentions/{id}/approve
@@ -47,6 +48,7 @@ tests/
 **Tecnologias**: Jest + React Testing Library + @testing-library/user-event
 
 **Exemplos**:
+
 - `intentions.ui.spec.tsx` - Testa fluxo completo de submissão de intenção via UI
 
 **Cobertura**: Obrigatórios para P1 (US1-US3), opcionais para P2 (US4).
@@ -108,21 +110,21 @@ Fornece utilitários para testar Next.js App Router API Routes:
 
 ### P1 - Admissão de Membros
 
-| Módulo | Contract Tests | Integration Tests | Status |
-|--------|---------------|-------------------|--------|
-| POST /api/intentions | ✅ | ✅ | Completo |
-| GET /api/admin/intentions | ✅ | ⏳ | Em progresso |
-| POST /api/admin/intentions/{id}/approve | ✅ | ⏳ | Em progresso |
-| POST /api/admin/intentions/{id}/reject | ✅ | ⏳ | Em progresso |
-| GET /api/signup/validate | ⏳ | ⏳ | Pendente |
-| POST /api/signup | ⏳ | ⏳ | Pendente |
+| Módulo                                  | Contract Tests | Integration Tests | Status       |
+| --------------------------------------- | -------------- | ----------------- | ------------ |
+| POST /api/intentions                    | ✅             | ✅                | Completo     |
+| GET /api/admin/intentions               | ✅             | ⏳                | Em progresso |
+| POST /api/admin/intentions/{id}/approve | ✅             | ⏳                | Em progresso |
+| POST /api/admin/intentions/{id}/reject  | ✅             | ⏳                | Em progresso |
+| GET /api/signup/validate                | ⏳             | ⏳                | Pendente     |
+| POST /api/signup                        | ⏳             | ⏳                | Pendente     |
 
 ### P2 - Dashboard de Performance
 
-| Módulo | Contract Tests | Integration Tests | Status |
-|--------|---------------|-------------------|--------|
-| GET /api/dashboard | ⏳ | ⏳ | Pendente |
-| GET /api/reports | ⏳ | ⏳ | Pendente |
+| Módulo             | Contract Tests | Integration Tests | Status   |
+| ------------------ | -------------- | ----------------- | -------- |
+| GET /api/dashboard | ⏳             | ⏳                | Pendente |
+| GET /api/reports   | ⏳             | ⏳                | Pendente |
 
 ## Exemplos de Casos de Teste
 
@@ -198,4 +200,3 @@ pnpm test -- --coverage
 - [ ] Adicionar testes de contrato para dashboard
 - [ ] Configurar relatório de cobertura
 - [ ] Adicionar testes de performance
-
