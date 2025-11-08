@@ -101,5 +101,73 @@ export class SignupService {
 
 		return member;
 	}
+
+	/**
+	 * Recupera link de cadastro por email
+	 * Gera um novo token se necessário (não podemos recuperar o token original pois é hasheado)
+	 */
+	static async recoverSignupLink(email: string) {
+		// Buscar intenção aprovada com este email
+		const intention = await prisma.intention.findFirst({
+			where: {
+				email,
+				status: "APPROVED",
+			},
+			include: {
+				invitation: true,
+			},
+			orderBy: {
+				createdAt: "desc",
+			},
+		});
+
+		if (!intention) {
+			return { found: false, reason: "Nenhuma intenção aprovada encontrada para este email" };
+		}
+
+		// Sempre gerar um novo token (não podemos recuperar o original pois é hasheado)
+		// Isso permite que o usuário recupere o link mesmo se perdeu o anterior
+		const token = crypto.randomBytes(32).toString("hex");
+		const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
+		// Criar ou atualizar convite (expira em 7 dias)
+		const expiresAt = new Date();
+		expiresAt.setDate(expiresAt.getDate() + 7);
+
+		if (intention.invitation) {
+			// Atualizar convite existente com novo token
+			await prisma.invitation.update({
+				where: { id: intention.invitation.id },
+				data: {
+					tokenHash,
+					expiresAt,
+					usedAt: null, // Resetar se estava usado (permite reutilizar)
+				},
+			});
+		} else {
+			// Criar novo convite
+			await prisma.invitation.create({
+				data: {
+					intentionId: intention.id,
+					tokenHash,
+					expiresAt,
+				},
+			});
+		}
+
+		const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+		const signupUrl = `${baseUrl}/cadastro/${token}`;
+
+		logger.info("Link de cadastro recuperado/regenerado", {
+			email,
+			intentionId: intention.id,
+		});
+
+		return {
+			found: true,
+			url: signupUrl,
+			expiresAt: expiresAt.toISOString(),
+		};
+	}
 }
 
