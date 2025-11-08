@@ -33,20 +33,23 @@ describe("GET /api/admin/intentions", () => {
 
 	it("deve retornar lista de intenções quando autenticado", async () => {
 		// Criar intenções de teste
-		await prisma.intention.createMany([
-			{
+		await prisma.intention.create({
+			data: {
 				name: "João",
 				email: "joao@example.com",
 				company: "TechCorp",
 				status: "PENDING",
 			},
-			{
+		});
+
+		await prisma.intention.create({
+			data: {
 				name: "Maria",
 				email: "maria@example.com",
 				company: "InnovaBiz",
 				status: "APPROVED",
 			},
-		]);
+		});
 
 		const request = createMockRequest("GET", "/api/admin/intentions", undefined, {
 			authorization: `Bearer ${ADMIN_TOKEN}`,
