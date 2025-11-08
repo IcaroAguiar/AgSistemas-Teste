@@ -1,6 +1,6 @@
 import Link from "next/link";
-import Image from "next/image";
 
+import { Logo } from "@/components/Logo";
 import { Button } from "@/components/ui/button";
 import {
 	Card,
@@ -16,14 +16,7 @@ export default function Page() {
 			{/* Hero Section */}
 			<section className="mx-auto w-full max-w-5xl text-center">
 				<div className="flex justify-center mb-6">
-					<Image
-						src="/images/logo.png"
-						alt="AgSistemas Logo"
-						width={120}
-						height={120}
-						className="object-contain"
-						priority
-					/>
+					<Logo width={120} height={120} />
 				</div>
 				<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
 					AgSistemas
