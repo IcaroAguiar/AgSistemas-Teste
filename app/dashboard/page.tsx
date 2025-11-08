@@ -229,7 +229,7 @@ export default function DashboardPage() {
 			<section className="mx-auto w-full max-w-7xl">
 				<div className="flex items-center justify-between mb-4">
 					<div className="flex items-center gap-4">
-						<Logo width={48} height={48} showText />
+						<Logo width={64} height={64} showText />
 					</div>
 					<Button variant="outline" asChild>
 						<Link href="/">

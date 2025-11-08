@@ -16,7 +16,7 @@ export default function Page() {
 			{/* Hero Section */}
 			<section className="mx-auto w-full max-w-5xl text-center">
 				<div className="flex justify-center mb-6">
-					<Logo width={120} height={120} />
+					<Logo width={160} height={160} />
 				</div>
 				<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
 					AgSistemas
