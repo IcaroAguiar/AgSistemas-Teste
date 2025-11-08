@@ -1,141 +1,170 @@
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
-
-const featureColumns = [
-	{
-		title: "Gestão de Membros",
-		bullets: [
-			"Intenções públicas com validação",
-			"Painel admin para aprovar/recusar",
-			"Cadastro completo com token seguro",
-		],
-	},
-	{
-		title: "Comunicação & Engajamento",
-		bullets: [
-			"Comunicados segmentados",
-			"Reuniões e check-in em tempo real",
-			"Registro de reuniões 1:1",
-		],
-	},
-	{
-		title: "Negócios & Financeiro",
-		bullets: [
-			"Indicações com status e obrigado",
-			"Dashboards e relatórios periódicos",
-			"Mensalidades com cobrança e reminder",
-		],
-	},
-];
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 
 export default function Page() {
 	return (
 		<main className="flex flex-1 flex-col gap-16 px-6 py-16 sm:px-10 lg:px-16">
+			{/* Hero Section */}
 			<section className="mx-auto w-full max-w-5xl text-center">
-				<p className="text-sm uppercase tracking-[0.3em] text-primary/80">
-					Plataforma fullstack Next.js 16 + React 19.2
-				</p>
-				<h1 className="mt-4 text-4xl font-semibold leading-tight text-white sm:text-5xl">
-					Operação completa para grupos de networking em um único painel
+				<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+					AgSistemas
 				</h1>
+				<p className="mt-4 text-2xl font-medium text-primary">
+					Plataforma de Gestão para Grupos de Networking
+				</p>
 				<p className="mt-6 text-lg text-muted-foreground">
-					Arquitetura opinada, testes obrigatórios para fluxos críticos e
-					documentação viva (specs, plano, dados e API) já versionadas no
-					repositório.
+					Gerencie membros, indicações, comunicação e financeiro em um único
+					painel integrado.
 				</p>
 				<div className="mt-8 flex flex-wrap justify-center gap-4">
 					<Button size="lg" asChild>
-						<Link href="#docs">Explorar documentação</Link>
+						<Link href="/interesse">Expressar Interesse</Link>
 					</Button>
-					<Button size="lg" variant="secondary" asChild>
-						<Link href="#api">Ver contratos de API</Link>
+					<Button size="lg" variant="outline" asChild>
+						<Link href="/status-intencao">Ver Status da Minha Intenção</Link>
 					</Button>
 				</div>
 			</section>
 
+			{/* Features Grid */}
 			<section className="grid gap-6 md:grid-cols-3">
-				{featureColumns.map((feature) => (
-					<article
-						key={feature.title}
-						className="rounded-2xl border border-white/10 bg-card/70 p-6 backdrop-blur"
-					>
-						<h3 className="text-lg font-semibold text-white">
-							{feature.title}
-						</h3>
-						<ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-							{feature.bullets.map((item) => (
-								<li key={item} className="flex items-start gap-2">
-									<span className="mt-1 h-2 w-2 rounded-full bg-accent" />
-									<span>{item}</span>
-								</li>
-							))}
+				<Card>
+					<CardHeader>
+						<CardTitle>Gestão de Membros</CardTitle>
+						<CardDescription>
+							Processo completo de admissão e gestão
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<ul className="space-y-2 text-sm text-muted-foreground">
+							<li className="flex items-start gap-2">
+								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
+								<span>Intenções públicas com validação</span>
+							</li>
+							<li className="flex items-start gap-2">
+								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
+								<span>Painel admin para aprovar/recusar</span>
+							</li>
+							<li className="flex items-start gap-2">
+								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
+								<span>Cadastro completo com token seguro</span>
+							</li>
 						</ul>
-					</article>
-				))}
+						<div className="mt-4">
+							<Button variant="outline" size="sm" asChild>
+								<Link href="/interesse">Ver mais</Link>
+							</Button>
+						</div>
+					</CardContent>
+				</Card>
+
+				<Card>
+					<CardHeader>
+						<CardTitle>Comunicação & Engajamento</CardTitle>
+						<CardDescription>
+							Mantenha todos conectados e informados
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<ul className="space-y-2 text-sm text-muted-foreground">
+							<li className="flex items-start gap-2">
+								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
+								<span>Comunicados segmentados</span>
+							</li>
+							<li className="flex items-start gap-2">
+								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
+								<span>Reuniões e check-in em tempo real</span>
+							</li>
+							<li className="flex items-start gap-2">
+								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
+								<span>Registro de reuniões 1:1</span>
+							</li>
+						</ul>
+					</CardContent>
+				</Card>
+
+				<Card>
+					<CardHeader>
+						<CardTitle>Negócios & Financeiro</CardTitle>
+						<CardDescription>
+							Acompanhe indicações e mensalidades
+						</CardDescription>
+					</CardHeader>
+					<CardContent>
+						<ul className="space-y-2 text-sm text-muted-foreground">
+							<li className="flex items-start gap-2">
+								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
+								<span>Indicações com status e obrigado</span>
+							</li>
+							<li className="flex items-start gap-2">
+								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
+								<span>Dashboards e relatórios periódicos</span>
+							</li>
+							<li className="flex items-start gap-2">
+								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
+								<span>Mensalidades com cobrança</span>
+							</li>
+						</ul>
+						<div className="mt-4">
+							<Button variant="outline" size="sm" asChild>
+								<Link href="/dashboard">Ver Dashboard</Link>
+							</Button>
+						</div>
+					</CardContent>
+				</Card>
 			</section>
 
-			<section
-				id="docs"
-				className="mx-auto w-full max-w-4xl space-y-4 rounded-2xl border border-white/10 bg-card/70 p-8 backdrop-blur"
-			>
-				<div>
-					<p className="text-sm uppercase tracking-[0.3em] text-primary/80">
-						Documentação
-					</p>
-					<h2 className="mt-2 text-2xl font-semibold text-white">
-						Arquitetura, dados e especificações
+			{/* Quick Access */}
+			<section className="mx-auto w-full max-w-4xl">
+				<div className="rounded-2xl border border-white/10 bg-card/70 p-8 backdrop-blur">
+					<h2 className="text-2xl font-semibold text-white">
+						Acesso Rápido
 					</h2>
-					<p className="text-muted-foreground">
-						Todos os artefatos vivem no repositório, dentro da pasta{" "}
-						<code className="font-mono">docs/</code> e
-						<code className="font-mono">specs/001-admissao-membros/</code>. Abra
-						esses arquivos diretamente no editor.
+					<p className="mt-2 text-muted-foreground">
+						Principais funcionalidades da plataforma
 					</p>
-				</div>
-				<ul className="grid gap-3 text-sm text-muted-foreground sm:grid-cols-2">
-					<li className="rounded-xl border border-white/10 bg-black/20 p-4">
-						<p className="font-semibold text-white">docs/architecture.md</p>
-						<p>Visão completa do sistema (todas as áreas do desafio).</p>
-					</li>
-					<li className="rounded-xl border border-white/10 bg-black/20 p-4">
-						<p className="font-semibold text-white">docs/data-model.md</p>
-						<p>Entidades, campos e relacionamentos.</p>
-					</li>
-					<li className="rounded-xl border border-white/10 bg-black/20 p-4">
-						<p className="font-semibold text-white">docs/api.md</p>
-						<p>Rotas REST organizadas por domínio.</p>
-					</li>
-					<li className="rounded-xl border border-white/10 bg-black/20 p-4">
-						<p className="font-semibold text-white">docs/openapi.yaml</p>
-						<p>Contrato OpenAPI 3.0 (importável no Insomnia/Postman).</p>
-					</li>
-				</ul>
-			</section>
-
-			<section
-				id="api"
-				className="mx-auto w-full max-w-4xl space-y-4 rounded-2xl border border-accent/40 bg-card/60 p-8 backdrop-blur"
-			>
-				<div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-					<div>
-						<p className="text-sm uppercase tracking-[0.3em] text-primary/80">
-							Contratos
-						</p>
-						<h2 className="text-2xl font-semibold text-white">
-							Estados críticos + testes obrigatórios
-						</h2>
-						<p className="text-muted-foreground">
-							Fluxo P1 (Admissão de Membros) possui testes de contrato e
-							integração planejados. Execute{" "}
-							<code className="font-mono">pnpm test</code> e{" "}
-							<code className="font-mono">pnpm typecheck</code> antes de enviar
-							qualquer PR.
-						</p>
+					<div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+						<Button variant="outline" className="h-full flex-col items-start justify-start p-4 text-left" asChild>
+							<Link href="/interesse" className="w-full h-full flex flex-col items-start">
+								<span className="font-semibold block mb-1">Expressar Interesse</span>
+								<span className="text-xs text-muted-foreground block">
+									Preencha o formulário para participar
+								</span>
+							</Link>
+						</Button>
+						<Button variant="outline" className="h-full flex-col items-start justify-start p-4 text-left" asChild>
+							<Link href="/status-intencao" className="w-full h-full flex flex-col items-start">
+								<span className="font-semibold block mb-1">Status da Intenção</span>
+								<span className="text-xs text-muted-foreground block">
+									Consulte se foi aprovado e acesse o link
+								</span>
+							</Link>
+						</Button>
+						<Button variant="outline" className="h-full flex-col items-start justify-start p-4 text-left" asChild>
+							<Link href="/administracao" className="w-full h-full flex flex-col items-start">
+								<span className="font-semibold block mb-1">Área Administrativa</span>
+								<span className="text-xs text-muted-foreground block">
+									Gerencie intenções e aprovações
+								</span>
+							</Link>
+						</Button>
+						<Button variant="outline" className="h-full flex-col items-start justify-start p-4 text-left" asChild>
+							<Link href="/dashboard" className="w-full h-full flex flex-col items-start">
+								<span className="font-semibold block mb-1">Dashboard</span>
+								<span className="text-xs text-muted-foreground block">
+									Área privada - Requer autenticação
+								</span>
+							</Link>
+						</Button>
 					</div>
-					<Button variant="secondary" asChild>
-						<Link href="/docs/api">Abrir docs/api.md</Link>
-					</Button>
 				</div>
 			</section>
 		</main>
