@@ -4,13 +4,15 @@ Documento de Arquitetura completo cobrindo todas as funcionalidades exigidas em
 desafio.txt. A implementação prática inicial focará no fluxo P1 (Admissão de
 Membros), porém a arquitetura é pensada para o sistema completo e escalável.
 
-## 1) Visão Geral e Stack
+- ## 1) Visão Geral e Stack
 
-- Frontend: Next.js (App Router) + React 18
+- Frontend: Next.js 16 (App Router) + React 19.2
 - Backend: Next.js API Routes (Node.js 20 LTS). Evolução: extrair para serviço
   Node (NestJS/Express) se necessário.
 - Banco de Dados: SQLite (dev/avaliação). Produção recomendada: PostgreSQL.
 - ORM: Prisma
+- Gerenciador de pacotes: pnpm
+- UI Kit: shadcn/ui com Tailwind; paleta Azul Escuro (#0B1B34) e Branco (#FFFFFF)
 - Testes: Jest + React Testing Library + supertest
 - Observabilidade: logs estruturados (pino/console JSON) + correlação por
   request ID
@@ -209,7 +211,7 @@ rotas administrativas neste escopo de avaliação.
 - GET /api/meetings — lista reuniões (membros)
 - POST /api/meetings/{id}/checkin — registra presença (membro)
 
-Contrato detalhado adicional se encontra em `specs/001-admissao-membros/contracts/openapi.yaml`.
+Contrato detalhado adicional se encontra em `docs/openapi.yaml`.
 
 ## 6) Frontend (Next.js) — Estrutura de Componentes
 
@@ -241,7 +243,9 @@ components/
 └── ui/*
 ```
 
-Estado global mínimo (React Query/Zustand opcional). Validações com Zod.
+Estado global mínimo (React Query/Zustand opcional). Validações com Zod. UI
+com shadcn/ui e Tailwind; paleta Azul Escuro (#0B1B34) e Branco (#FFFFFF). Para
+dark mode e temas, usar next-themes conforme docs do shadcn/ui.
 
 ## 7) Segurança e Acesso
 

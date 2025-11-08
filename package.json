@@ -1,0 +1,69 @@
+{
+	"name": "agsistemas-teste",
+	"version": "1.0.0",
+	"description": "Plataforma de gestão para grupos de networking",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"build": "next build",
+		"start": "next start",
+		"typecheck": "tsc --noEmit",
+    "test": "jest --runInBand --passWithNoTests",
+    "test:watch": "jest --watch",
+		"lint": "pnpm biome:check",
+		"format": "pnpm biome:write",
+		"biome:check": "biome check .",
+		"biome:write": "biome check --write .",
+		"biome:format": "biome format --write .",
+		"prisma:generate": "pnpm exec prisma generate",
+		"prisma:migrate": "pnpm exec prisma migrate dev",
+		"prepare": "pnpm prisma:generate"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "UNLICENSED",
+	"packageManager": "pnpm@10.19.0",
+	"pnpm": {
+		"trustedDependencies": [
+			"@prisma/client",
+			"@prisma/engines",
+			"prisma"
+		]
+	},
+	"dependencies": {
+		"@prisma/client": "^6.19.0",
+		"@radix-ui/react-slot": "^1.2.4",
+		"class-variance-authority": "^0.7.1",
+		"clsx": "^2.1.1",
+		"lucide-react": "^0.553.0",
+		"next": "^16.0.1",
+		"next-themes": "^0.4.6",
+		"react": "19.2.0",
+		"react-dom": "19.2.0",
+		"tailwind-merge": "^3.3.1",
+		"tailwindcss-animate": "^1.0.7",
+		"zod": "^4.1.12"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "2.2.4",
+		"@testing-library/dom": "10.0.0",
+		"@testing-library/jest-dom": "6.6.3",
+		"@testing-library/react": "16.0.1",
+		"@testing-library/user-event": "14.5.2",
+		"@types/jest": "29.5.12",
+		"@types/node": "20.12.7",
+		"@types/react": "19.0.7",
+		"@types/react-dom": "19.0.2",
+		"@types/supertest": "2.0.16",
+		"autoprefixer": "^10.4.21",
+		"jest": "29.7.0",
+		"jest-environment-jsdom": "29.7.0",
+		"postcss": "^8.5.6",
+		"prisma": "^6.19.0",
+		"supertest": "7.0.0",
+		"tailwindcss": "3.4.13",
+		"ts-jest": "29.2.5",
+		"ts-node": "^10.9.2",
+		"typescript": "5.6.3"
+	}
+}

@@ -1,0 +1,32 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+	"formatter": {
+		"enabled": true
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"correctness": {
+				"useUniqueElementIds": "off"
+			},
+			"suspicious": {
+				"noUnknownAtRules": "off"
+			}
+		}
+	},
+	"files": {
+		"includes": [
+			"app/**/*",
+			"components/**/*",
+			"lib/**/*",
+			"docs/**/*",
+			"specs/**/*",
+			"prisma/**/*",
+			"*.ts",
+			"*.tsx",
+			"*.js",
+			"*.json"
+		]
+	}
+}

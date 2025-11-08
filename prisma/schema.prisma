@@ -1,0 +1,190 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum MemberRole {
+  ADMIN
+  MEMBER
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum IntentionStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum MeetingType {
+  WEEKLY
+  SPECIAL
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  LATE
+}
+
+enum ReferralStatus {
+  PROPOSED
+  CONTACTED
+  IN_PROGRESS
+  WON
+  LOST
+}
+
+enum InvoiceStatus {
+  PENDING
+  PAID
+  OVERDUE
+}
+
+model Member {
+  id        String        @id @default(uuid())
+  name      String
+  email     String        @unique
+  company   String?
+  role      MemberRole    @default(MEMBER)
+  status    MemberStatus  @default(ACTIVE)
+  joinedAt  DateTime?
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+
+  announcements     Announcement[]
+  outgoingReferrals Referral[]      @relation("ref_from")
+  incomingReferrals Referral[]      @relation("ref_to")
+  gratitudesSent    Gratitude[]     @relation("gratitude_from")
+  gratitudesReceived Gratitude[]    @relation("gratitude_to")
+  attendances       Attendance[]
+  invoices          Invoice[]
+  oneOnOnesA        OneOnOne[]      @relation("one_on_one_a")
+  oneOnOnesB        OneOnOne[]      @relation("one_on_one_b")
+}
+
+model Intention {
+  id        String          @id @default(uuid())
+  name      String
+  email     String
+  company   String
+  status    IntentionStatus @default(PENDING)
+  reason    String?
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+
+  invitation Invitation?
+
+  @@index([email, status])
+}
+
+model Invitation {
+  id          String     @id @default(uuid())
+  intentionId String     @unique
+  tokenHash   String     @unique
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime   @default(now())
+
+  intention Intention @relation(fields: [intentionId], references: [id], onDelete: Cascade)
+}
+
+model Announcement {
+  id          String   @id @default(uuid())
+  title       String
+  message     String
+  publishedAt DateTime @default(now())
+  authorId    String
+
+  author Member @relation(fields: [authorId], references: [id], onDelete: Cascade)
+}
+
+model Meeting {
+  id        String      @id @default(uuid())
+  title     String
+  date      DateTime
+  location  String?
+  type      MeetingType @default(WEEKLY)
+  createdAt DateTime    @default(now())
+
+  attendances Attendance[]
+}
+
+model Attendance {
+  id         String           @id @default(uuid())
+  meetingId  String
+  memberId   String
+  status     AttendanceStatus @default(PRESENT)
+  checkinAt  DateTime?
+  createdAt  DateTime         @default(now())
+
+  meeting Meeting @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+  member  Member  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@unique([meetingId, memberId])
+}
+
+model Referral {
+  id           String         @id @default(uuid())
+  fromMemberId String
+  toMemberId   String
+  prospect     String
+  value        Float?
+  status       ReferralStatus @default(PROPOSED)
+  notes        String?
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  fromMember Member @relation("ref_from", fields: [fromMemberId], references: [id], onDelete: Cascade)
+  toMember   Member @relation("ref_to", fields: [toMemberId], references: [id], onDelete: Cascade)
+  gratitudes Gratitude[]
+}
+
+model Gratitude {
+  id           String   @id @default(uuid())
+  fromMemberId String
+  toMemberId   String
+  referralId   String?
+  message      String
+  amount       Float?
+  createdAt    DateTime @default(now())
+
+  fromMember Member   @relation("gratitude_from", fields: [fromMemberId], references: [id], onDelete: Cascade)
+  toMember   Member   @relation("gratitude_to", fields: [toMemberId], references: [id], onDelete: Cascade)
+  referral   Referral? @relation(fields: [referralId], references: [id])
+}
+
+model OneOnOne {
+  id         String   @id @default(uuid())
+  memberAId  String
+  memberBId  String
+  occurredAt DateTime
+  notes      String?
+
+  memberA Member @relation("one_on_one_a", fields: [memberAId], references: [id], onDelete: Cascade)
+  memberB Member @relation("one_on_one_b", fields: [memberBId], references: [id], onDelete: Cascade)
+
+  @@unique([memberAId, memberBId, occurredAt])
+}
+
+model Invoice {
+  id        String        @id @default(uuid())
+  memberId  String
+  dueDate   DateTime
+  amount    Float
+  status    InvoiceStatus @default(PENDING)
+  paidAt    DateTime?
+  reference String?
+  createdAt DateTime      @default(now())
+
+  member Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@index([status, dueDate])
+}

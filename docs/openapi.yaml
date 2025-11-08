@@ -1,0 +1,416 @@
+openapi: 3.0.3
+info:
+  title: Plataforma de Gestão - API
+  version: 0.2.0
+  description: Endpoints principais por domínio. Escopo de avaliação (token admin).
+servers:
+  - url: http://localhost:3000
+tags:
+  - name: admissions
+  - name: announcements
+  - name: meetings
+  - name: referrals
+  - name: gratitudes
+  - name: oneonones
+  - name: invoices
+paths:
+  /api/intentions:
+    post:
+      tags: [admissions]
+      summary: Submete intenção de participação
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/IntentionCreate"
+      responses:
+        "201": { description: Criada, retorna intenção básica }
+
+  /api/admin/intentions:
+    get:
+      tags: [admissions]
+      summary: Lista intenções (admin)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          description: Lista intenções
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Intention" }
+
+  /api/admin/intentions/{id}/approve:
+    post:
+      tags: [admissions]
+      summary: Aprova intenção e gera convite (admin)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Convite gerado }
+
+  /api/admin/intentions/{id}/reject:
+    post:
+      tags: [admissions]
+      summary: Rejeita intenção (admin)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                reason: { type: string }
+      responses:
+        "204": { description: Rejeitada }
+
+  /api/signup/validate:
+    get:
+      tags: [admissions]
+      summary: Valida token de convite
+      parameters:
+        - in: query
+          name: token
+          required: true
+          schema: { type: string }
+      responses:
+        "200": { description: Token válido }
+        "400": { description: Token inválido/expirado }
+
+  /api/signup:
+    post:
+      tags: [admissions]
+      summary: Conclui cadastro com token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/SignupRequest" }
+      responses:
+        "201": { description: Membro criado }
+
+  /api/announcements:
+    get:
+      tags: [announcements]
+      summary: Lista comunicados
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Announcement" }
+    post:
+      tags: [announcements]
+      summary: Cria comunicado (admin)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AnnouncementCreate" }
+      responses:
+        "201": { description: Criado }
+
+  /api/announcements/{id}:
+    put:
+      tags: [announcements]
+      summary: Atualiza comunicado (admin)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/AnnouncementCreate" }
+      responses:
+        "204": { description: Atualizado }
+    delete:
+      tags: [announcements]
+      summary: Remove comunicado (admin)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "204": { description: Removido }
+
+  /api/meetings:
+    get:
+      tags: [meetings]
+      summary: Lista reuniões
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Meeting" }
+    post:
+      tags: [meetings]
+      summary: Cria reunião (admin)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/MeetingCreate" }
+      responses:
+        "201": { description: Criada }
+
+  /api/meetings/{id}/checkin:
+    post:
+      tags: [meetings]
+      summary: Registra presença (membro)
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        "204": { description: Check-in realizado }
+
+  /api/referrals:
+    get:
+      tags: [referrals]
+      summary: Lista indicações do usuário (feitas e recebidas)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Referral" }
+    post:
+      tags: [referrals]
+      summary: Cria indicação (membro)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/ReferralCreate" }
+      responses:
+        "201": { description: Criada }
+
+  /api/referrals/{id}/status:
+    patch:
+      tags: [referrals]
+      summary: Atualiza status da indicação
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [proposed, contacted, in_progress, won, lost]
+      responses:
+        "204": { description: Atualizado }
+
+  /api/gratitudes:
+    post:
+      tags: [gratitudes]
+      summary: Registra “obrigado” (membro)
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/GratitudeCreate" }
+      responses:
+        "201": { description: Criado }
+
+  /api/oneonones:
+    post:
+      tags: [oneonones]
+      summary: Registra 1:1
+      security: [{ bearerAuth: [] }]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/OneOnOneCreate" }
+      responses:
+        "201": { description: Criado }
+
+  /api/invoices/generate:
+    post:
+      tags: [invoices]
+      summary: Gera mensalidades (admin)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "202": { description: Processamento iniciado }
+
+  /api/invoices:
+    get:
+      tags: [invoices]
+      summary: Lista mensalidades (membro ou admin)
+      security: [{ bearerAuth: [] }]
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: "#/components/schemas/Invoice" }
+
+  /api/invoices/{id}/status:
+    patch:
+      tags: [invoices]
+      summary: Atualiza status da mensalidade (admin)
+      security: [{ bearerAuth: [] }]
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [status]
+              properties:
+                status:
+                  type: string
+                  enum: [pending, paid, overdue]
+      responses:
+        "204": { description: Atualizado }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+  schemas:
+    Intention:
+      type: object
+      properties:
+        id: { type: string }
+        name: { type: string }
+        email: { type: string, format: email }
+        company: { type: string }
+        status: { type: string, enum: [pending, approved, rejected] }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    IntentionCreate:
+      type: object
+      required: [name, email, company]
+      properties:
+        name: { type: string }
+        email: { type: string, format: email }
+        company: { type: string }
+    SignupRequest:
+      type: object
+      required: [token, name, email, company]
+      properties:
+        token: { type: string }
+        name: { type: string }
+        email: { type: string, format: email }
+        company: { type: string }
+    Announcement:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        message: { type: string }
+        publishedAt: { type: string, format: date-time }
+        authorId: { type: string }
+    AnnouncementCreate:
+      type: object
+      required: [title, message]
+      properties:
+        title: { type: string }
+        message: { type: string }
+    Meeting:
+      type: object
+      properties:
+        id: { type: string }
+        title: { type: string }
+        date: { type: string, format: date-time }
+        location: { type: string }
+        type: { type: string, enum: [weekly, special] }
+    MeetingCreate:
+      type: object
+      required: [title, date, type]
+      properties:
+        title: { type: string }
+        date: { type: string, format: date-time }
+        location: { type: string }
+        type: { type: string, enum: [weekly, special] }
+    Referral:
+      type: object
+      properties:
+        id: { type: string }
+        fromMemberId: { type: string }
+        toMemberId: { type: string }
+        prospect: { type: string }
+        value: { type: number }
+        status:
+          { type: string, enum: [proposed, contacted, in_progress, won, lost] }
+        notes: { type: string }
+        createdAt: { type: string, format: date-time }
+        updatedAt: { type: string, format: date-time }
+    ReferralCreate:
+      type: object
+      required: [toMemberId, prospect]
+      properties:
+        toMemberId: { type: string }
+        prospect: { type: string }
+        value: { type: number }
+        notes: { type: string }
+    GratitudeCreate:
+      type: object
+      required: [toMemberId, message]
+      properties:
+        toMemberId: { type: string }
+        referralId: { type: string }
+        message: { type: string }
+        amount: { type: number }
+    OneOnOneCreate:
+      type: object
+      required: [memberBId, occurredAt]
+      properties:
+        memberBId: { type: string }
+        occurredAt: { type: string, format: date-time }
+        notes: { type: string }
+    Invoice:
+      type: object
+      properties:
+        id: { type: string }
+        memberId: { type: string }
+        dueDate: { type: string, format: date }
+        amount: { type: number }
+        status: { type: string, enum: [pending, paid, overdue] }
+        paidAt: { type: string, format: date-time }
+        reference: { type: string }
+      required: [memberId, dueDate, amount, status]
