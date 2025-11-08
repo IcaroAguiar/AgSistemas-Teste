@@ -16,17 +16,32 @@ export async function GET(request: NextRequest) {
 			const intentions = await AdminIntentionService.listIntentions();
 
 			return NextResponse.json(
-				intentions.map((intention) => ({
-					id: intention.id,
-					name: intention.name,
-					email: intention.email,
-					company: intention.company,
-					status: intention.status,
-					reason: intention.reason,
-					createdAt: intention.createdAt.toISOString(),
-					updatedAt: intention.updatedAt.toISOString(),
-					hasInvitation: !!intention.invitation,
-				})),
+				intentions.map((intention) => {
+					// Converter status de uppercase (PENDING) para lowercase (pending)
+					const statusMap: Record<string, "pending" | "approved" | "rejected"> = {
+						PENDING: "pending",
+						APPROVED: "approved",
+						REJECTED: "rejected",
+					};
+
+					// Type assertion para incluir motivation que pode não estar no tipo gerado ainda
+					const intentionWithMotivation = intention as typeof intention & {
+						motivation?: string | null;
+					};
+
+					return {
+						id: intention.id,
+						name: intention.name,
+						email: intention.email,
+						company: intention.company,
+						motivation: intentionWithMotivation.motivation ?? null,
+						status: statusMap[intention.status] || "pending",
+						reason: intention.reason,
+						createdAt: intention.createdAt.toISOString(),
+						updatedAt: intention.updatedAt.toISOString(),
+						hasInvitation: !!intention.invitation,
+					};
+				}),
 			);
 		} catch (error) {
 			logger.error("Erro ao listar intenções", {
