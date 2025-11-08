@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 
 import { ThemeProvider } from "@/components/providers/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 
 const fontSans = Inter({ subsets: ["latin"], variable: "--font-sans" });
 
@@ -23,6 +24,7 @@ export default function RootLayout({
 			>
 				<ThemeProvider>
 					<div className="flex min-h-screen flex-col">{children}</div>
+					<Toaster />
 				</ThemeProvider>
 			</body>
 		</html>
