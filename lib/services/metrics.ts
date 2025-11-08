@@ -12,8 +12,20 @@ export class MetricsService {
 	static async getDashboardMetrics() {
 		const now = new Date();
 		const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+		const startOfLastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
+		const endOfLastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
 
-		const [membrosAtivos, indicacoesNoMes, obrigadosNoMes] = await Promise.all([
+		const [
+			membrosAtivos,
+			indicacoesNoMes,
+			obrigadosNoMes,
+			membrosAtivosMesAnterior,
+			indicacoesMesAnterior,
+			obrigadosMesAnterior,
+			totalIndicacoes,
+			totalObrigados,
+			membrosInativos,
+		] = await Promise.all([
 			// Membros ativos
 			prisma.member.count({
 				where: {
@@ -38,12 +50,75 @@ export class MetricsService {
 					},
 				},
 			}),
+
+			// Membros ativos no mês anterior (para comparação)
+			// Contar membros que estavam ativos até o final do mês anterior
+			prisma.member.count({
+				where: {
+					status: "ACTIVE",
+					joinedAt: {
+						lte: endOfLastMonth,
+					},
+				},
+			}),
+
+			// Indicações no mês anterior
+			prisma.referral.count({
+				where: {
+					createdAt: {
+						gte: startOfLastMonth,
+						lt: startOfMonth,
+					},
+				},
+			}),
+
+			// Obrigados no mês anterior
+			prisma.gratitude.count({
+				where: {
+					createdAt: {
+						gte: startOfLastMonth,
+						lt: startOfMonth,
+					},
+				},
+			}),
+
+			// Total de indicações (histórico)
+			prisma.referral.count(),
+
+			// Total de obrigados (histórico)
+			prisma.gratitude.count(),
+
+			// Membros inativos
+			prisma.member.count({
+				where: {
+					status: "INACTIVE",
+				},
+			}),
 		]);
+
+		// Calcular variações percentuais
+		const calcularVariacao = (atual: number, anterior: number) => {
+			if (anterior === 0) return atual > 0 ? 100 : 0;
+			return Math.round(((atual - anterior) / anterior) * 100);
+		};
 
 		return {
 			membrosAtivos,
 			indicacoesNoMes,
 			obrigadosNoMes,
+			membrosInativos,
+			totalIndicacoes,
+			totalObrigados,
+			variacoes: {
+				membrosAtivos: calcularVariacao(membrosAtivos, membrosAtivosMesAnterior),
+				indicacoes: calcularVariacao(indicacoesNoMes, indicacoesMesAnterior),
+				obrigados: calcularVariacao(obrigadosNoMes, obrigadosMesAnterior),
+			},
+			mesAnterior: {
+				membrosAtivos: membrosAtivosMesAnterior,
+				indicacoes: indicacoesMesAnterior,
+				obrigados: obrigadosMesAnterior,
+			},
 		};
 	}
 
