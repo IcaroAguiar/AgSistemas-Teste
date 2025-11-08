@@ -1,122 +1,136 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import {
+	Field,
+	FieldError,
+	FieldGroup,
+	FieldLabel,
+	FieldSet,
+} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { createIntentionSchema, type CreateIntentionInput } from "@/lib/validation/intentions";
 
 export function IntentionForm() {
-	const [formData, setFormData] = useState({
-		name: "",
-		email: "",
-		company: "",
+	const form = useForm<CreateIntentionInput>({
+		resolver: zodResolver(createIntentionSchema),
+		defaultValues: {
+			name: "",
+			email: "",
+			company: "",
+			motivation: "",
+		},
 	});
-	const [isSubmitting, setIsSubmitting] = useState(false);
-	const [error, setError] = useState<string | null>(null);
-	const [success, setSuccess] = useState(false);
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault();
-		setIsSubmitting(true);
-		setError(null);
-		setSuccess(false);
-
+	const onSubmit = async (data: CreateIntentionInput) => {
 		try {
 			const response = await fetch("/api/intentions", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(formData),
+				body: JSON.stringify(data),
 			});
 
-			const data = await response.json();
+			const result = await response.json();
 
 			if (!response.ok) {
-				throw new Error(data.message || "Erro ao enviar intenção");
+				throw new Error(result.message || "Erro ao enviar intenção");
 			}
 
-			setSuccess(true);
-			setFormData({ name: "", email: "", company: "" });
+			form.reset();
+			toast.success("Sucesso!", {
+				description: "Intenção enviada com sucesso! Aguarde o contato da administração.",
+			});
 		} catch (err) {
-			setError(err instanceof Error ? err.message : "Erro desconhecido");
-		} finally {
-			setIsSubmitting(false);
+			toast.error("Erro", {
+				description: err instanceof Error ? err.message : "Erro desconhecido",
+			});
 		}
 	};
 
+	const errors = form.formState.errors;
+
 	return (
-		<form onSubmit={handleSubmit} className="space-y-6">
-			<div className="space-y-2">
-				<Label htmlFor="name">
-					Nome completo <span className="text-destructive">*</span>
-				</Label>
-				<Input
-					id="name"
-					name="name"
-					type="text"
-					required
-					value={formData.name}
-					onChange={(e) =>
-						setFormData({ ...formData, name: e.target.value })
-					}
-					placeholder="Seu nome completo"
-					disabled={isSubmitting}
-				/>
-			</div>
+		<form onSubmit={form.handleSubmit(onSubmit)}>
+			<FieldSet>
+				<FieldGroup>
+					<Field data-invalid={!!errors.name}>
+						<FieldLabel htmlFor="name">
+							Nome completo <span className="text-destructive">*</span>
+						</FieldLabel>
+						<Input
+							id="name"
+							placeholder="Seu nome completo"
+							disabled={form.formState.isSubmitting}
+							aria-invalid={!!errors.name}
+							{...form.register("name")}
+						/>
+						<FieldError errors={errors.name ? [errors.name] : undefined} />
+					</Field>
 
-			<div className="space-y-2">
-				<Label htmlFor="email">
-					Email <span className="text-destructive">*</span>
-				</Label>
-				<Input
-					id="email"
-					name="email"
-					type="email"
-					required
-					value={formData.email}
-					onChange={(e) =>
-						setFormData({ ...formData, email: e.target.value })
-					}
-					placeholder="seu@email.com"
-					disabled={isSubmitting}
-				/>
-			</div>
+					<Field data-invalid={!!errors.email}>
+						<FieldLabel htmlFor="email">
+							Email <span className="text-destructive">*</span>
+						</FieldLabel>
+						<Input
+							id="email"
+							type="email"
+							placeholder="seu@email.com"
+							disabled={form.formState.isSubmitting}
+							aria-invalid={!!errors.email}
+							{...form.register("email")}
+						/>
+						<FieldError errors={errors.email ? [errors.email] : undefined} />
+					</Field>
 
-			<div className="space-y-2">
-				<Label htmlFor="company">
-					Empresa <span className="text-destructive">*</span>
-				</Label>
-				<Input
-					id="company"
-					name="company"
-					type="text"
-					required
-					value={formData.company}
-					onChange={(e) =>
-						setFormData({ ...formData, company: e.target.value })
-					}
-					placeholder="Nome da sua empresa"
-					disabled={isSubmitting}
-				/>
-			</div>
+					<Field data-invalid={!!errors.company}>
+						<FieldLabel htmlFor="company">
+							Empresa <span className="text-destructive">*</span>
+						</FieldLabel>
+						<Input
+							id="company"
+							placeholder="Nome da sua empresa"
+							disabled={form.formState.isSubmitting}
+							aria-invalid={!!errors.company}
+							{...form.register("company")}
+						/>
+						<FieldError errors={errors.company ? [errors.company] : undefined} />
+					</Field>
 
-			{error && (
-				<div className="rounded-md bg-destructive/10 p-3 text-sm text-destructive">
-					{error}
-				</div>
-			)}
+					<Field data-invalid={!!errors.motivation}>
+						<FieldLabel htmlFor="motivation">
+							Por que você quer participar?
+						</FieldLabel>
+						<Textarea
+							id="motivation"
+							placeholder="Conte-nos um pouco sobre seus motivos para participar do grupo..."
+							disabled={form.formState.isSubmitting}
+							aria-invalid={!!errors.motivation}
+							className="min-h-[100px] resize-none"
+							{...form.register("motivation")}
+						/>
+						<FieldError errors={errors.motivation ? [errors.motivation] : undefined} />
+					</Field>
 
-			{success && (
-				<div className="rounded-md bg-green-500/10 p-3 text-sm text-green-500">
-					Intenção enviada com sucesso! Aguarde o contato da administração.
-				</div>
-			)}
-
-			<Button type="submit" disabled={isSubmitting} size="lg" className="w-full">
-				{isSubmitting ? "Enviando..." : "Enviar intenção de participação"}
-			</Button>
+					<Field>
+						<Button
+							type="submit"
+							disabled={form.formState.isSubmitting}
+							size="lg"
+							className="w-full"
+						>
+							{form.formState.isSubmitting
+								? "Enviando..."
+								: "Enviar intenção de participação"}
+						</Button>
+					</Field>
+				</FieldGroup>
+			</FieldSet>
 		</form>
 	);
 }
-

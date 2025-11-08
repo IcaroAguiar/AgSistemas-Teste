@@ -7,6 +7,7 @@ export const createIntentionSchema = z.object({
 	name: z.string().min(1, "Nome é obrigatório").max(120, "Nome muito longo"),
 	email: z.string().email("Email inválido"),
 	company: z.string().min(1, "Empresa é obrigatória").max(160, "Nome da empresa muito longo"),
+	motivation: z.string().optional(),
 });
 
 export type CreateIntentionInput = z.infer<typeof createIntentionSchema>;

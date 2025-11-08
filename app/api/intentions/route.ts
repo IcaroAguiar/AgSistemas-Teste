@@ -29,6 +29,7 @@ export async function POST(request: NextRequest) {
 				name: intention.name,
 				email: intention.email,
 				company: intention.company,
+				motivation: intention.motivation,
 				status: intention.status,
 				createdAt: intention.createdAt.toISOString(),
 				updatedAt: intention.updatedAt.toISOString(),

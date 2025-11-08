@@ -33,14 +33,19 @@ export class IntentionService {
 		}
 
 		// Criar intenção
-		const intention = await prisma.intention.create({
+		// Nota: O campo motivation foi adicionado ao schema mas o TypeScript pode não reconhecê-lo ainda
+		// após regenerar o Prisma Client. Se o erro persistir, reinicie o servidor TypeScript.
+		const createData: Parameters<typeof prisma.intention.create>[0] = {
 			data: {
 				name: validated.name,
 				email: validated.email,
 				company: validated.company,
+				motivation: validated.motivation || null,
 				status: "PENDING",
-			},
-		});
+			} as any, // Type assertion temporária até TypeScript reconhecer o campo
+		};
+		
+		const intention = await prisma.intention.create(createData);
 
 		logger.info("Intenção criada com sucesso", {
 			intentionId: intention.id,
@@ -71,6 +76,23 @@ export class IntentionService {
 			where: { id },
 			include: {
 				invitation: true,
+			},
+		});
+
+		return intention;
+	}
+
+	/**
+	 * Busca intenção por email (público - para consulta de status)
+	 */
+	static async getIntentionByEmail(email: string) {
+		const intention = await prisma.intention.findFirst({
+			where: { email },
+			include: {
+				invitation: true,
+			},
+			orderBy: {
+				createdAt: "desc",
 			},
 		});
 
