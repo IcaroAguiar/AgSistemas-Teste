@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
+import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
 	Field,
@@ -143,6 +145,14 @@ export default function StatusIntencaoPage() {
 	return (
 		<main className="flex flex-1 flex-col gap-8 px-6 py-16 sm:px-10 lg:px-16">
 			<section className="mx-auto w-full max-w-2xl">
+				<div className="mb-4">
+					<Button variant="ghost" asChild>
+						<Link href="/">
+							<ArrowLeft className="h-4 w-4 mr-2" />
+							Voltar ao Início
+						</Link>
+					</Button>
+				</div>
 				<div className="space-y-4">
 					<h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
 						Status da Minha Intenção

@@ -1,9 +1,21 @@
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+
 import { IntentionForm } from "@/components/forms/IntentionForm";
+import { Button } from "@/components/ui/button";
 
 export default function InteressePage() {
 	return (
 		<main className="flex flex-1 flex-col gap-8 px-6 py-16 sm:px-10 lg:px-16">
 			<section className="mx-auto w-full max-w-2xl">
+				<div className="mb-4">
+					<Button variant="ghost" asChild>
+						<Link href="/">
+							<ArrowLeft className="h-4 w-4 mr-2" />
+							Voltar ao Início
+						</Link>
+					</Button>
+				</div>
 				<div className="space-y-4 text-center">
 					<h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
 						Expressar Interesse
