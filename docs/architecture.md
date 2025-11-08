@@ -12,7 +12,7 @@ Membros), porém a arquitetura é pensada para o sistema completo e escalável.
 - Banco de Dados: SQLite (dev/avaliação). Produção recomendada: PostgreSQL.
 - ORM: Prisma
 - Gerenciador de pacotes: pnpm
-- UI Kit: shadcn/ui com Tailwind; paleta Azul Escuro (#0B1B34) e Branco (#FFFFFF)
+- UI Kit: shadcn/ui com Tailwind; Primary #06B8EB; base Azul Escuro (#0B1B34) e Branco (#FFFFFF)
 - Testes: Jest + React Testing Library + supertest
 - Observabilidade: logs estruturados (pino/console JSON) + correlação por
   request ID
@@ -244,7 +244,7 @@ components/
 ```
 
 Estado global mínimo (React Query/Zustand opcional). Validações com Zod. UI
-com shadcn/ui e Tailwind; paleta Azul Escuro (#0B1B34) e Branco (#FFFFFF). Para
+com shadcn/ui e Tailwind; Primary #06B8EB; base Azul Escuro (#0B1B34) e Branco (#FFFFFF). Para
 dark mode e temas, usar next-themes conforme docs do shadcn/ui.
 
 ## 7) Segurança e Acesso

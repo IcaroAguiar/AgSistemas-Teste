@@ -8,8 +8,8 @@
 		"build": "next build",
 		"start": "next start",
 		"typecheck": "tsc --noEmit",
-    "test": "jest --runInBand --passWithNoTests",
-    "test:watch": "jest --watch",
+		"test": "jest --runInBand --passWithNoTests",
+		"test:watch": "jest --watch",
 		"lint": "pnpm biome:check",
 		"format": "pnpm biome:write",
 		"biome:check": "biome check .",
@@ -25,6 +25,11 @@
 	"packageManager": "pnpm@10.19.0",
 	"pnpm": {
 		"trustedDependencies": [
+			"@prisma/client",
+			"@prisma/engines",
+			"prisma"
+		],
+		"ignoredBuiltDependencies": [
 			"@prisma/client",
 			"@prisma/engines",
 			"prisma"

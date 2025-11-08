@@ -9,7 +9,8 @@
 	--card-foreground: 0 0% 100%;
 	--popover: 214 64% 12%;
 	--popover-foreground: 0 0% 100%;
-	--primary: 214 74% 24%;
+	/* Primary changed to #06B8EB (HSL ≈ 193 95% 47%) */
+	--primary: 193 95% 47%;
 	--primary-foreground: 0 0% 100%;
 	--secondary: 214 34% 25%;
 	--secondary-foreground: 0 0% 100%;
@@ -21,7 +22,7 @@
 	--destructive-foreground: 0 0% 100%;
 	--border: 214 32% 35%;
 	--input: 214 32% 35%;
-	--ring: 214 74% 24%;
+	--ring: 193 95% 47%;
 	--radius: 0.8rem;
 }
 
@@ -32,8 +33,9 @@
 	--card-foreground: 0 0% 100%;
 	--popover: 214 64% 8%;
 	--popover-foreground: 0 0% 100%;
-	--primary: 0 0% 100%;
-	--primary-foreground: 214 64% 12%;
+	/* Dark theme primary also uses #06B8EB for consistency */
+	--primary: 193 95% 47%;
+	--primary-foreground: 0 0% 100%;
 	--secondary: 214 32% 30%;
 	--secondary-foreground: 0 0% 100%;
 	--muted: 214 32% 30%;
@@ -44,7 +46,7 @@
 	--destructive-foreground: 0 0% 100%;
 	--border: 214 32% 30%;
 	--input: 214 32% 30%;
-	--ring: 214 74% 24%;
+	--ring: 193 95% 47%;
 }
 
 @layer base {
