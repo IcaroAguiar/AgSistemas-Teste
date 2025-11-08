@@ -1,0 +1,30 @@
+# Tool/assistant artifacts (keep repo minimal)
+.codex/
+spec-kit/
+.specify/
+specs/
+
+# Secrets / env files
+.env
+.env.*
+.envrc
+
+# Node/Next.js common
+node_modules/
+.next/
+out/
+dist/
+build/
+coverage/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+
+AGENTS.md
