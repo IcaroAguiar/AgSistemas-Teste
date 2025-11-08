@@ -83,7 +83,7 @@ export default function RecuperarLinkPage() {
 		<main className="flex flex-1 flex-col gap-8 px-6 py-16 sm:px-10 lg:px-16">
 			<section className="mx-auto w-full max-w-2xl">
 				<div className="space-y-4">
-					<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+					<h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
 						Recuperar Link de Cadastro
 					</h1>
 					<p className="text-lg text-muted-foreground">
@@ -91,7 +91,7 @@ export default function RecuperarLinkPage() {
 					</p>
 				</div>
 
-				<div className="mt-8 rounded-2xl border border-white/10 bg-card/70 p-6 backdrop-blur">
+				<div className="mt-8 rounded-2xl border border-border bg-card/70 p-6 backdrop-blur">
 					<form onSubmit={form.handleSubmit(onSubmit)}>
 						<FieldSet>
 							<FieldGroup>
@@ -128,7 +128,7 @@ export default function RecuperarLinkPage() {
 
 					{recoveredUrl && (
 						<div className="mt-6 space-y-4">
-							<div className="rounded-lg border border-white/10 bg-background/50 p-4">
+							<div className="rounded-lg border border-border bg-background/50 p-4">
 								<div className="flex items-center justify-between gap-4">
 									<div className="flex-1 min-w-0">
 										<p className="text-sm text-muted-foreground mb-1">

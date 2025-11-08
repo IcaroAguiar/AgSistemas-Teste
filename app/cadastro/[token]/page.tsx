@@ -156,7 +156,7 @@ export default function CadastroPage() {
 		<main className="flex flex-1 flex-col gap-8 px-6 py-16 sm:px-10 lg:px-16">
 			<section className="mx-auto w-full max-w-2xl">
 				<div className="space-y-4 text-center">
-					<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+					<h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
 						Complete seu Cadastro
 					</h1>
 					<p className="text-lg text-muted-foreground">

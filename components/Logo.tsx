@@ -48,7 +48,7 @@ export function Logo({ width = 40, height = 40, className = "", showText = false
 				/>
 			)}
 			{showText && (
-				<span className="text-xl font-semibold text-white">AgSistemas</span>
+				<span className="text-xl font-semibold text-foreground">AgSistemas</span>
 			)}
 		</Link>
 	);

@@ -176,7 +176,7 @@ export default function DashboardPage() {
 			<main className="flex flex-1 flex-col gap-8 px-6 py-16 sm:px-10 lg:px-16">
 				<section className="mx-auto w-full max-w-md">
 					<div className="space-y-4">
-						<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+						<h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
 							Dashboard
 						</h1>
 						<p className="text-lg text-muted-foreground">
@@ -184,7 +184,7 @@ export default function DashboardPage() {
 						</p>
 					</div>
 
-					<div className="mt-8 rounded-2xl border border-white/10 bg-card/70 p-6 backdrop-blur">
+					<div className="mt-8 rounded-2xl border border-border bg-card/70 p-6 backdrop-blur">
 						<div className="space-y-4">
 							<div className="space-y-2">
 								<Label htmlFor="dashboardToken">Token de Administração</Label>
@@ -243,7 +243,7 @@ export default function DashboardPage() {
 					</div>
 				</div>
 				<div className="mt-6 space-y-4">
-					<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+					<h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
 						Dashboard
 					</h1>
 					<p className="text-lg text-muted-foreground">

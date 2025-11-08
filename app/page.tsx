@@ -24,7 +24,7 @@ export default function Page() {
 				<div className="flex justify-center mb-6">
 					<Logo width={160} height={160} />
 				</div>
-				<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+				<h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
 					AgSistemas
 				</h1>
 				<p className="mt-4 text-2xl font-medium text-primary">
@@ -134,8 +134,8 @@ export default function Page() {
 
 			{/* Quick Access */}
 			<section className="mx-auto w-full max-w-4xl">
-				<div className="rounded-2xl border border-white/10 bg-card/70 p-8 backdrop-blur">
-					<h2 className="text-2xl font-semibold text-white">
+				<div className="rounded-2xl border border-border bg-card/70 p-8 backdrop-blur">
+					<h2 className="text-2xl font-semibold text-foreground">
 						Acesso Rápido
 					</h2>
 					<p className="mt-2 text-muted-foreground">

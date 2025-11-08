@@ -293,7 +293,7 @@ export default function AdministracaoPage() {
 					</div>
 				</div>
 				<div className="mt-6 space-y-4">
-					<h1 className="text-4xl font-semibold leading-tight text-white sm:text-5xl">
+					<h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
 						Área Administrativa
 					</h1>
 					<p className="text-lg text-muted-foreground">
@@ -303,7 +303,7 @@ export default function AdministracaoPage() {
 
 				<div className="mt-8 space-y-6">
 					{/* Autenticação */}
-					<div className="rounded-2xl border border-white/10 bg-card/70 p-6 backdrop-blur">
+					<div className="rounded-2xl border border-border bg-card/70 p-6 backdrop-blur">
 						<div className="flex flex-col gap-4 sm:flex-row sm:items-end">
 							<div className="flex-1 space-y-2">
 								<Label htmlFor="adminToken">Token de Administração</Label>
@@ -335,7 +335,7 @@ export default function AdministracaoPage() {
 
 					{/* Filtros e Tabela */}
 					{intentions.length > 0 && (
-						<div className="rounded-2xl border border-white/10 bg-card/70 p-6 backdrop-blur">
+						<div className="rounded-2xl border border-border bg-card/70 p-6 backdrop-blur">
 							<div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
 								<h2 className="text-2xl font-semibold">
 									Intenções ({filteredIntentions.length})
@@ -466,7 +466,7 @@ export default function AdministracaoPage() {
 
 					{/* Loading skeleton */}
 					{isLoading && intentions.length === 0 && (
-						<div className="rounded-2xl border border-white/10 bg-card/70 p-6 backdrop-blur">
+						<div className="rounded-2xl border border-border bg-card/70 p-6 backdrop-blur">
 							<div className="space-y-4">
 								<Skeleton className="h-10 w-full" />
 								<Skeleton className="h-10 w-full" />
@@ -480,7 +480,7 @@ export default function AdministracaoPage() {
 						intentions.length === 0 &&
 						adminToken &&
 						!error && (
-							<div className="rounded-2xl border border-white/10 bg-card/70 p-6 backdrop-blur">
+							<div className="rounded-2xl border border-border bg-card/70 p-6 backdrop-blur">
 								<p className="text-center text-muted-foreground">
 									Nenhuma intenção encontrada.
 								</p>
