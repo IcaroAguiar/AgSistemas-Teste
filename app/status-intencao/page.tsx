@@ -20,7 +20,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Copy, Check, ExternalLink, Clock, CheckCircle2, XCircle } from "lucide-react";
 import { z } from "zod";
-import Link from "next/link";
 
 const statusSchema = z.object({
 	email: z.string().email("Email inválido"),
