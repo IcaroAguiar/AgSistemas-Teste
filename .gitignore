@@ -30,3 +30,5 @@ Thumbs.db
 AGENTS.md
 
 /generated/prisma
+prisma/dev.db
+tsconfig.tsbuildinfo
