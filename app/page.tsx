@@ -40,7 +40,7 @@ export default function Page() {
 				</p>
 				<div className="mt-8 flex flex-wrap justify-center gap-4">
 					<Button size="lg" asChild>
-						<Link href="/interesse">Expressar Interesse</Link>
+						<Link href="/interesse">Torne-se um membro</Link>
 					</Button>
 					<Button size="lg" variant="outline" asChild>
 						<Link href="/status-intencao">Ver Status da Minha Intenção</Link>
@@ -74,7 +74,7 @@ export default function Page() {
 						</ul>
 						<div className="mt-4">
 							<Button variant="outline" size="sm" asChild>
-								<Link href="/interesse">Expressar Interesse</Link>
+								<Link href="/interesse">Torne-se um membro</Link>
 							</Button>
 						</div>
 					</CardContent>
@@ -151,7 +151,7 @@ export default function Page() {
 								className="w-full h-full flex flex-col items-start gap-2"
 							>
 								<span className="font-semibold text-lg">
-									Expressar Interesse
+									Torne-se um membro
 								</span>
 								<span className="text-sm text-muted-foreground">
 									Preencha o formulário para expressar seu interesse em fazer

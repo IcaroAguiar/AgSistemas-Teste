@@ -18,7 +18,7 @@ export default function InteressePage() {
 				</div>
 				<div className="space-y-4 text-center">
 					<h1 className="text-4xl font-semibold leading-tight text-foreground sm:text-5xl">
-						Expressar Interesse
+						Torne-se um membro
 					</h1>
 					<p className="text-lg text-muted-foreground">
 						Preencha o formulário abaixo para expressar seu interesse em fazer
