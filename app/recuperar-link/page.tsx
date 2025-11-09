@@ -1,11 +1,12 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { ArrowLeft, Check, Copy } from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
+import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import {
 	Field,
@@ -15,8 +16,6 @@ import {
 	FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { z } from "zod";
-import { Copy, Check } from "lucide-react";
 
 const recoverSchema = z.object({
 	email: z.string().email("Email inválido"),
@@ -117,7 +116,9 @@ export default function RecuperarLinkPage() {
 										aria-invalid={!!errors.email}
 										{...form.register("email")}
 									/>
-									<FieldError errors={errors.email ? [errors.email] : undefined} />
+									<FieldError
+										errors={errors.email ? [errors.email] : undefined}
+									/>
 								</Field>
 
 								<Field>
@@ -170,8 +171,9 @@ export default function RecuperarLinkPage() {
 							</div>
 							<div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
 								<p className="text-sm text-muted-foreground">
-									<strong>Importante:</strong> Este link expira em 7 dias. Guarde-o
-									em local seguro ou complete seu cadastro o quanto antes.
+									<strong>Importante:</strong> Este link expira em 7 dias.
+									Guarde-o em local seguro ou complete seu cadastro o quanto
+									antes.
 								</p>
 							</div>
 						</div>
@@ -181,4 +183,3 @@ export default function RecuperarLinkPage() {
 		</main>
 	);
 }
-

@@ -1,29 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import {
-	Table,
-	TableBody,
-	TableCell,
-	TableHead,
-	TableHeader,
-	TableRow,
-} from "@/components/ui/table";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Badge } from "@/components/ui/badge";
-import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
 import {
 	Dialog,
 	DialogContent,
@@ -32,8 +16,24 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+	Table,
+	TableBody,
+	TableCell,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from "@/components/ui/table";
 
 type IntentionStatus = "pending" | "approved" | "rejected";
 
@@ -124,7 +124,8 @@ export default function AdministracaoPage() {
 				description: `${data.length} intenção(ões) carregada(s) com sucesso.`,
 			});
 		} catch (err) {
-			const errorMessage = err instanceof Error ? err.message : "Erro desconhecido";
+			const errorMessage =
+				err instanceof Error ? err.message : "Erro desconhecido";
 			setError(errorMessage);
 			toast.error("Erro", {
 				description: errorMessage,
@@ -163,7 +164,7 @@ export default function AdministracaoPage() {
 			// Recarregar lista
 			await fetchIntentions();
 			setConfirmDialog({ ...confirmDialog, open: false });
-			
+
 			// Função para copiar URL para clipboard
 			const copyToClipboard = async () => {
 				try {
@@ -177,7 +178,7 @@ export default function AdministracaoPage() {
 					});
 				}
 			};
-			
+
 			toast.success("Intenção Aprovada!", {
 				description: `URL de cadastro gerada: ${data.url}`,
 				action: {
@@ -186,7 +187,8 @@ export default function AdministracaoPage() {
 				},
 			});
 		} catch (err) {
-			const errorMessage = err instanceof Error ? err.message : "Erro desconhecido";
+			const errorMessage =
+				err instanceof Error ? err.message : "Erro desconhecido";
 			setError(errorMessage);
 			toast.error("Erro ao Aprovar", {
 				description: errorMessage,
@@ -230,7 +232,8 @@ export default function AdministracaoPage() {
 				description: "A intenção foi rejeitada com sucesso.",
 			});
 		} catch (err) {
-			const errorMessage = err instanceof Error ? err.message : "Erro desconhecido";
+			const errorMessage =
+				err instanceof Error ? err.message : "Erro desconhecido";
 			setError(errorMessage);
 			toast.error("Erro ao Rejeitar", {
 				description: errorMessage,
@@ -286,9 +289,7 @@ export default function AdministracaoPage() {
 					<div className="flex items-center gap-2">
 						<ThemeToggle />
 						<Button variant="outline" asChild>
-							<Link href="/">
-								Voltar ao Início
-							</Link>
+							<Link href="/">Voltar ao Início</Link>
 						</Button>
 					</div>
 				</div>
@@ -396,9 +397,11 @@ export default function AdministracaoPage() {
 												<TableCell>
 													<Badge
 														variant={
-															getStatusBadgeVariant(
-																intention.status,
-															) as "default" | "destructive" | "secondary" | "outline"
+															getStatusBadgeVariant(intention.status) as
+																| "default"
+																| "destructive"
+																| "secondary"
+																| "outline"
 														}
 													>
 														{getStatusLabel(intention.status)}
@@ -420,9 +423,7 @@ export default function AdministracaoPage() {
 																			intentionName: intention.name,
 																		})
 																	}
-																	disabled={
-																		actionLoading === intention.id
-																	}
+																	disabled={actionLoading === intention.id}
 																>
 																	{actionLoading === intention.id
 																		? "Processando..."
@@ -439,9 +440,7 @@ export default function AdministracaoPage() {
 																			intentionName: intention.name,
 																		})
 																	}
-																	disabled={
-																		actionLoading === intention.id
-																	}
+																	disabled={actionLoading === intention.id}
 																>
 																	{actionLoading === intention.id
 																		? "Processando..."
@@ -476,25 +475,20 @@ export default function AdministracaoPage() {
 					)}
 
 					{/* Mensagem quando não há intenções */}
-					{!isLoading &&
-						intentions.length === 0 &&
-						adminToken &&
-						!error && (
-							<div className="rounded-2xl border border-border bg-card/70 p-6 backdrop-blur">
-								<p className="text-center text-muted-foreground">
-									Nenhuma intenção encontrada.
-								</p>
-							</div>
-						)}
+					{!isLoading && intentions.length === 0 && adminToken && !error && (
+						<div className="rounded-2xl border border-border bg-card/70 p-6 backdrop-blur">
+							<p className="text-center text-muted-foreground">
+								Nenhuma intenção encontrada.
+							</p>
+						</div>
+					)}
 				</div>
 			</section>
 
 			{/* Dialog de confirmação */}
 			<Dialog
 				open={confirmDialog.open}
-				onOpenChange={(open) =>
-					setConfirmDialog({ ...confirmDialog, open })
-				}
+				onOpenChange={(open) => setConfirmDialog({ ...confirmDialog, open })}
 			>
 				<DialogContent>
 					<DialogHeader>
@@ -505,10 +499,8 @@ export default function AdministracaoPage() {
 						</DialogTitle>
 						<DialogDescription>
 							Tem certeza que deseja{" "}
-							{confirmDialog.action === "approve"
-								? "aprovar"
-								: "rejeitar"}{" "}
-							a intenção de <strong>{confirmDialog.intentionName}</strong>?
+							{confirmDialog.action === "approve" ? "aprovar" : "rejeitar"} a
+							intenção de <strong>{confirmDialog.intentionName}</strong>?
 							{confirmDialog.action === "approve" &&
 								" Um link de cadastro será gerado."}
 						</DialogDescription>
@@ -547,4 +539,3 @@ export default function AdministracaoPage() {
 		</main>
 	);
 }
-

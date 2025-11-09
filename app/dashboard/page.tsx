@@ -1,10 +1,24 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import {
+	ArrowDownRight,
+	ArrowUpRight,
+	Handshake,
+	Heart,
+	Home,
+	Minus,
+	TrendingDown,
+	TrendingUp,
+	Users,
+} from "lucide-react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
 	Card,
 	CardContent,
@@ -12,24 +26,10 @@ import {
 	CardHeader,
 	CardTitle,
 } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-	Home,
-	Users,
-	TrendingUp,
-	TrendingDown,
-	Minus,
-	Handshake,
-	Heart,
-	ArrowUpRight,
-	ArrowDownRight,
-} from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface DashboardMetrics {
 	membrosAtivos: number;
@@ -105,7 +105,8 @@ export default function DashboardPage() {
 			setMetrics(data);
 			localStorage.setItem("adminToken", adminToken);
 		} catch (err) {
-			const errorMessage = err instanceof Error ? err.message : "Erro desconhecido";
+			const errorMessage =
+				err instanceof Error ? err.message : "Erro desconhecido";
 			setError(errorMessage);
 			toast.error("Erro", {
 				description: errorMessage,
@@ -136,7 +137,10 @@ export default function DashboardPage() {
 	const getVariationBadge = (variation: number) => {
 		if (variation > 0) {
 			return (
-				<Badge variant="default" className="gap-1 bg-green-600 hover:bg-green-700">
+				<Badge
+					variant="default"
+					className="gap-1 bg-green-600 hover:bg-green-700"
+				>
 					<ArrowUpRight className="h-3 w-3" />
 					{formatPercent(variation)}
 				</Badge>
@@ -201,7 +205,11 @@ export default function DashboardPage() {
 									}}
 								/>
 							</div>
-							<Button onClick={handleLogin} disabled={isLoading} className="w-full">
+							<Button
+								onClick={handleLogin}
+								disabled={isLoading}
+								className="w-full"
+							>
 								{isLoading ? "Carregando..." : "Acessar Dashboard"}
 							</Button>
 							{error && (
@@ -291,13 +299,15 @@ export default function DashboardPage() {
 									<div className="flex items-center gap-2 mt-2">
 										{getVariationBadge(metrics.variacoes.membrosAtivos)}
 										<p className="text-xs text-muted-foreground">
-											vs. mês anterior ({formatNumber(metrics.mesAnterior.membrosAtivos)})
+											vs. mês anterior (
+											{formatNumber(metrics.mesAnterior.membrosAtivos)})
 										</p>
 									</div>
 									{metrics.membrosInativos > 0 && (
 										<div className="mt-3">
 											<p className="text-xs text-muted-foreground mb-1">
-												Membros inativos: {formatNumber(metrics.membrosInativos)}
+												Membros inativos:{" "}
+												{formatNumber(metrics.membrosInativos)}
 											</p>
 											<Progress
 												value={calcularTaxaAtividade()}
@@ -322,7 +332,8 @@ export default function DashboardPage() {
 									<div className="flex items-center gap-2 mt-2">
 										{getVariationBadge(metrics.variacoes.indicacoes)}
 										<p className="text-xs text-muted-foreground">
-											vs. mês anterior ({formatNumber(metrics.mesAnterior.indicacoes)})
+											vs. mês anterior (
+											{formatNumber(metrics.mesAnterior.indicacoes)})
 										</p>
 									</div>
 									<div className="mt-3">
@@ -347,7 +358,8 @@ export default function DashboardPage() {
 									<div className="flex items-center gap-2 mt-2">
 										{getVariationBadge(metrics.variacoes.obrigados)}
 										<p className="text-xs text-muted-foreground">
-											vs. mês anterior ({formatNumber(metrics.mesAnterior.obrigados)})
+											vs. mês anterior (
+											{formatNumber(metrics.mesAnterior.obrigados)})
 										</p>
 									</div>
 									<div className="mt-3">
@@ -402,7 +414,9 @@ export default function DashboardPage() {
 									</div>
 									<p className="text-xs text-muted-foreground mt-2">
 										{formatNumber(metrics.membrosAtivos)} de{" "}
-										{formatNumber(metrics.membrosAtivos + metrics.membrosInativos)}{" "}
+										{formatNumber(
+											metrics.membrosAtivos + metrics.membrosInativos,
+										)}{" "}
 										membros
 									</p>
 								</CardContent>
@@ -413,14 +427,14 @@ export default function DashboardPage() {
 									<CardTitle className="text-sm font-medium">
 										Média de Indicações
 									</CardTitle>
-									<CardDescription>
-										Por membro ativo no mês
-									</CardDescription>
+									<CardDescription>Por membro ativo no mês</CardDescription>
 								</CardHeader>
 								<CardContent>
 									<div className="text-3xl font-bold text-primary">
 										{metrics.membrosAtivos > 0
-											? (metrics.indicacoesNoMes / metrics.membrosAtivos).toFixed(1)
+											? (
+													metrics.indicacoesNoMes / metrics.membrosAtivos
+												).toFixed(1)
 											: "0.0"}
 									</div>
 									<p className="text-xs text-muted-foreground mt-2">

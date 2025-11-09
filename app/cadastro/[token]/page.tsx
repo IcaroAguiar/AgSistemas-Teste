@@ -1,14 +1,21 @@
 "use client";
 
-import { useEffect } from "react";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useParams, useRouter } from "next/navigation";
-import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
+import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import {
 	Field,
 	FieldError,
@@ -18,19 +25,15 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-	Card,
-	CardContent,
-	CardDescription,
-	CardHeader,
-	CardTitle,
-} from "@/components/ui/card";
 
 const signupSchema = z.object({
 	token: z.string(),
 	name: z.string().min(1, "Nome é obrigatório").max(120, "Nome muito longo"),
 	email: z.string().email("Email inválido"),
-	company: z.string().min(1, "Empresa é obrigatória").max(160, "Nome da empresa muito longo"),
+	company: z
+		.string()
+		.min(1, "Empresa é obrigatória")
+		.max(160, "Nome da empresa muito longo"),
 });
 
 type SignupFormData = z.infer<typeof signupSchema>;
@@ -66,7 +69,8 @@ export default function CadastroPage() {
 				if (!response.ok) {
 					const data = await response.json();
 					toast.error("Erro na Validação", {
-						description: data.reason || data.message || "Token inválido ou expirado",
+						description:
+							data.reason || data.message || "Token inválido ou expirado",
 					});
 					return;
 				}
@@ -91,7 +95,8 @@ export default function CadastroPage() {
 				}
 			} catch (err) {
 				toast.error("Erro", {
-					description: err instanceof Error ? err.message : "Erro ao validar token",
+					description:
+						err instanceof Error ? err.message : "Erro ao validar token",
 				});
 			}
 		};
@@ -116,7 +121,8 @@ export default function CadastroPage() {
 			}
 
 			toast.success("Cadastro Concluído!", {
-				description: "Seu cadastro foi realizado com sucesso. Redirecionando...",
+				description:
+					"Seu cadastro foi realizado com sucesso. Redirecionando...",
 			});
 
 			// Redirecionar após 2 segundos
@@ -196,7 +202,9 @@ export default function CadastroPage() {
 											aria-invalid={!!errors.name}
 											{...form.register("name")}
 										/>
-										<FieldError errors={errors.name ? [errors.name] : undefined} />
+										<FieldError
+											errors={errors.name ? [errors.name] : undefined}
+										/>
 									</Field>
 
 									<Field data-invalid={!!errors.email}>
@@ -211,7 +219,9 @@ export default function CadastroPage() {
 											aria-invalid={!!errors.email}
 											{...form.register("email")}
 										/>
-										<FieldError errors={errors.email ? [errors.email] : undefined} />
+										<FieldError
+											errors={errors.email ? [errors.email] : undefined}
+										/>
 									</Field>
 
 									<Field data-invalid={!!errors.company}>
@@ -225,7 +235,9 @@ export default function CadastroPage() {
 											aria-invalid={!!errors.company}
 											{...form.register("company")}
 										/>
-										<FieldError errors={errors.company ? [errors.company] : undefined} />
+										<FieldError
+											errors={errors.company ? [errors.company] : undefined}
+										/>
 									</Field>
 
 									<Field>

@@ -1,12 +1,30 @@
 "use client";
 
-import { useState } from "react";
-import Link from "next/link";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import {
+	ArrowLeft,
+	Check,
+	CheckCircle2,
+	Clock,
+	Copy,
+	ExternalLink,
+	XCircle,
+} from "lucide-react";
+import Link from "next/link";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { ArrowLeft } from "lucide-react";
+import { z } from "zod";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+	CardTitle,
+} from "@/components/ui/card";
 import {
 	Field,
 	FieldError,
@@ -15,11 +33,6 @@ import {
 	FieldSet,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Copy, Check, ExternalLink, Clock, CheckCircle2, XCircle } from "lucide-react";
-import { z } from "zod";
 
 const statusSchema = z.object({
 	email: z.string().email("Email inválido"),
@@ -41,7 +54,8 @@ interface IntentionStatusResult {
 }
 
 export default function StatusIntencaoPage() {
-	const [statusResult, setStatusResult] = useState<IntentionStatusResult | null>(null);
+	const [statusResult, setStatusResult] =
+		useState<IntentionStatusResult | null>(null);
 	const [copied, setCopied] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
@@ -157,7 +171,8 @@ export default function StatusIntencaoPage() {
 						Status da Minha Intenção
 					</h1>
 					<p className="text-lg text-muted-foreground">
-						Digite seu email para consultar o status da sua intenção de participação
+						Digite seu email para consultar o status da sua intenção de
+						participação
 					</p>
 				</div>
 
@@ -177,7 +192,9 @@ export default function StatusIntencaoPage() {
 										aria-invalid={!!errors.email}
 										{...form.register("email")}
 									/>
-									<FieldError errors={errors.email ? [errors.email] : undefined} />
+									<FieldError
+										errors={errors.email ? [errors.email] : undefined}
+									/>
 								</Field>
 
 								<Field>
@@ -202,97 +219,124 @@ export default function StatusIntencaoPage() {
 										<CardTitle>Status da Intenção</CardTitle>
 										{getStatusBadge(statusResult.status)}
 									</div>
-									<CardDescription>{getStatusMessage(statusResult.status)}</CardDescription>
+									<CardDescription>
+										{getStatusMessage(statusResult.status)}
+									</CardDescription>
 								</CardHeader>
 								<CardContent className="space-y-4">
 									<div className="grid gap-2 text-sm">
 										<div>
-											<span className="font-medium text-muted-foreground">Nome:</span>{" "}
-											<span className="text-foreground">{statusResult.name}</span>
+											<span className="font-medium text-muted-foreground">
+												Nome:
+											</span>{" "}
+											<span className="text-foreground">
+												{statusResult.name}
+											</span>
 										</div>
 										<div>
-											<span className="font-medium text-muted-foreground">Email:</span>{" "}
-											<span className="text-foreground">{statusResult.email}</span>
+											<span className="font-medium text-muted-foreground">
+												Email:
+											</span>{" "}
+											<span className="text-foreground">
+												{statusResult.email}
+											</span>
 										</div>
 										<div>
-											<span className="font-medium text-muted-foreground">Empresa:</span>{" "}
-											<span className="text-foreground">{statusResult.company}</span>
+											<span className="font-medium text-muted-foreground">
+												Empresa:
+											</span>{" "}
+											<span className="text-foreground">
+												{statusResult.company}
+											</span>
 										</div>
 										<div>
 											<span className="font-medium text-muted-foreground">
 												Data de envio:
 											</span>{" "}
 											<span className="text-foreground">
-												{new Date(statusResult.createdAt).toLocaleDateString("pt-BR", {
-													day: "2-digit",
-													month: "2-digit",
-													year: "numeric",
-													hour: "2-digit",
-													minute: "2-digit",
-												})}
+												{new Date(statusResult.createdAt).toLocaleDateString(
+													"pt-BR",
+													{
+														day: "2-digit",
+														month: "2-digit",
+														year: "numeric",
+														hour: "2-digit",
+														minute: "2-digit",
+													},
+												)}
 											</span>
 										</div>
 									</div>
 
-									{statusResult.reason && statusResult.status === "rejected" && (
-										<Alert variant="destructive">
-											<AlertDescription>
-												<strong>Motivo da rejeição:</strong> {statusResult.reason}
-											</AlertDescription>
-										</Alert>
-									)}
-
-									{statusResult.status === "approved" && statusResult.signupUrl && (
-										<div className="space-y-3">
-											<div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
-												<p className="text-sm font-medium mb-2">
-													Link de Cadastro:
-												</p>
-												<div className="flex items-center gap-2">
-													<div className="flex-1 min-w-0">
-														<p className="text-sm font-mono break-all text-foreground">
-															{statusResult.signupUrl}
-														</p>
-													</div>
-													<Button
-														variant="outline"
-														size="sm"
-														onClick={() => copyToClipboard(statusResult.signupUrl!)}
-														className="shrink-0"
-													>
-														{copied ? (
-															<>
-																<Check className="h-4 w-4 mr-2" />
-																Copiado
-															</>
-														) : (
-															<>
-																<Copy className="h-4 w-4 mr-2" />
-																Copiar
-															</>
-														)}
-													</Button>
-													<Button
-														variant="default"
-														size="sm"
-														asChild
-														className="shrink-0"
-													>
-														<Link href={statusResult.signupUrl} target="_blank">
-															<ExternalLink className="h-4 w-4 mr-2" />
-															Acessar
-														</Link>
-													</Button>
-												</div>
-											</div>
-											<Alert>
+									{statusResult.reason &&
+										statusResult.status === "rejected" && (
+											<Alert variant="destructive">
 												<AlertDescription>
-													<strong>Importante:</strong> Este link expira em 7 dias.
-													Complete seu cadastro o quanto antes.
+													<strong>Motivo da rejeição:</strong>{" "}
+													{statusResult.reason}
 												</AlertDescription>
 											</Alert>
-										</div>
-									)}
+										)}
+
+									{statusResult.status === "approved" &&
+										statusResult.signupUrl && (
+											<div className="space-y-3">
+												<div className="rounded-lg border border-primary/20 bg-primary/5 p-4">
+													<p className="text-sm font-medium mb-2">
+														Link de Cadastro:
+													</p>
+													<div className="flex items-center gap-2">
+														<div className="flex-1 min-w-0">
+															<p className="text-sm font-mono break-all text-foreground">
+																{statusResult.signupUrl}
+															</p>
+														</div>
+														<Button
+															variant="outline"
+															size="sm"
+															onClick={() =>
+																copyToClipboard(statusResult.signupUrl!)
+															}
+															className="shrink-0"
+														>
+															{copied ? (
+																<>
+																	<Check className="h-4 w-4 mr-2" />
+																	Copiado
+																</>
+															) : (
+																<>
+																	<Copy className="h-4 w-4 mr-2" />
+																	Copiar
+																</>
+															)}
+														</Button>
+														<Button
+															variant="default"
+															size="sm"
+															asChild
+															className="shrink-0"
+														>
+															{/* External URLs are not compatible with typedRoutes; use anchor */}
+															<a
+																href={statusResult.signupUrl}
+																target="_blank"
+																rel="noreferrer"
+															>
+																<ExternalLink className="h-4 w-4 mr-2" />
+																Acessar
+															</a>
+														</Button>
+													</div>
+												</div>
+												<Alert>
+													<AlertDescription>
+														<strong>Importante:</strong> Este link expira em 7
+														dias. Complete seu cadastro o quanto antes.
+													</AlertDescription>
+												</Alert>
+											</div>
+										)}
 								</CardContent>
 							</Card>
 						</div>
@@ -302,4 +346,3 @@ export default function StatusIntencaoPage() {
 		</main>
 	);
 }
-

@@ -142,32 +142,66 @@ export default function Page() {
 						Principais funcionalidades da plataforma
 					</p>
 					<div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-						<Button variant="outline" className="h-full flex-col items-start justify-start p-4 text-left" asChild>
-							<Link href="/interesse" className="w-full h-full flex flex-col items-start">
-								<span className="font-semibold block mb-1">Expressar Interesse</span>
+						<Button
+							variant="outline"
+							className="h-full flex-col items-start justify-start p-4 text-left"
+							asChild
+						>
+							<Link
+								href="/interesse"
+								className="w-full h-full flex flex-col items-start"
+							>
+								<span className="font-semibold block mb-1">
+									Expressar Interesse
+								</span>
 								<span className="text-xs text-muted-foreground block">
 									Preencha o formulário para participar
 								</span>
 							</Link>
 						</Button>
-						<Button variant="outline" className="h-full flex-col items-start justify-start p-4 text-left" asChild>
-							<Link href="/status-intencao" className="w-full h-full flex flex-col items-start">
-								<span className="font-semibold block mb-1">Status da Intenção</span>
+						<Button
+							variant="outline"
+							className="h-full flex-col items-start justify-start p-4 text-left"
+							asChild
+						>
+							<Link
+								href="/status-intencao"
+								className="w-full h-full flex flex-col items-start"
+							>
+								<span className="font-semibold block mb-1">
+									Status da Intenção
+								</span>
 								<span className="text-xs text-muted-foreground block">
 									Consulte se foi aprovado e acesse o link
 								</span>
 							</Link>
 						</Button>
-						<Button variant="outline" className="h-full flex-col items-start justify-start p-4 text-left" asChild>
-							<Link href="/administracao" className="w-full h-full flex flex-col items-start">
-								<span className="font-semibold block mb-1">Área Administrativa</span>
+						<Button
+							variant="outline"
+							className="h-full flex-col items-start justify-start p-4 text-left"
+							asChild
+						>
+							<Link
+								href="/administracao"
+								className="w-full h-full flex flex-col items-start"
+							>
+								<span className="font-semibold block mb-1">
+									Área Administrativa
+								</span>
 								<span className="text-xs text-muted-foreground block">
 									Gerencie intenções e aprovações
 								</span>
 							</Link>
 						</Button>
-						<Button variant="outline" className="h-full flex-col items-start justify-start p-4 text-left" asChild>
-							<Link href="/dashboard" className="w-full h-full flex flex-col items-start">
+						<Button
+							variant="outline"
+							className="h-full flex-col items-start justify-start p-4 text-left"
+							asChild
+						>
+							<Link
+								href="/dashboard"
+								className="w-full h-full flex flex-col items-start"
+							>
 								<span className="font-semibold block mb-1">Dashboard</span>
 								<span className="text-xs text-muted-foreground block">
 									Área privada - Requer autenticação
