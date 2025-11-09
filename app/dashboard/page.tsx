@@ -57,12 +57,22 @@ export default function DashboardPage() {
 	const [error, setError] = useState<string | null>(null);
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-	// Carregar token do localStorage se existir
+	// Carregar token do localStorage ou cookie se existir
 	useEffect(() => {
 		const savedToken = localStorage.getItem("adminToken");
-		if (savedToken) {
-			setAdminToken(savedToken);
+		// Também verificar cookie
+		const cookieToken = document.cookie
+			.split("; ")
+			.find((row) => row.startsWith("adminToken="))
+			?.split("=")[1];
+		const token = savedToken || cookieToken;
+		if (token) {
+			setAdminToken(token);
 			setIsAuthenticated(true);
+			// Garantir que ambos estão sincronizados
+			if (savedToken && !cookieToken) {
+				document.cookie = `adminToken=${savedToken}; path=/; max-age=86400; SameSite=Lax`;
+			}
 		}
 	}, []);
 
@@ -103,7 +113,10 @@ export default function DashboardPage() {
 
 			const data = await response.json();
 			setMetrics(data);
+			// Salvar token no localStorage e cookie
 			localStorage.setItem("adminToken", adminToken);
+			// Salvar token em cookie para o proxy validar
+			document.cookie = `adminToken=${adminToken}; path=/; max-age=86400; SameSite=Lax`;
 		} catch (err) {
 			const errorMessage =
 				err instanceof Error ? err.message : "Erro desconhecido";
@@ -121,6 +134,8 @@ export default function DashboardPage() {
 			setError("Token de administração é obrigatório");
 			return;
 		}
+		// Salvar token em cookie antes de autenticar
+		document.cookie = `adminToken=${adminToken}; path=/; max-age=86400; SameSite=Lax`;
 		setIsAuthenticated(true);
 		fetchMetrics();
 	};
