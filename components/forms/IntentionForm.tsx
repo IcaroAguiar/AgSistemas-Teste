@@ -68,20 +68,26 @@ export function IntentionForm() {
 			toast.error("Erro", {
 				description: err instanceof Error ? err.message : "Erro desconhecido",
 			});
+		} finally {
+			setInstantSubmitting(false);
 		}
 	};
 
-	// Quando RHF marcar isSubmitting, podemos limpar o estado instantâneo
-	useEffect(() => {
-		if (form.formState.isSubmitting) {
-			setInstantSubmitting(false);
+	const handleFormSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		const isValid = await form.trigger();
+		if (!isValid) {
+			return;
 		}
-	}, [form.formState.isSubmitting]);
+		setInstantSubmitting(true);
+		const data = form.getValues();
+		await onSubmit(data);
+	};
 
 	const errors = form.formState.errors;
 
 	return (
-		<form noValidate onSubmit={form.handleSubmit(onSubmit)}>
+		<form noValidate onSubmit={handleFormSubmit}>
 			<FieldSet>
 				<FieldGroup>
 					<Field data-invalid={!!errors.name}>
@@ -148,12 +154,11 @@ export function IntentionForm() {
 					<Field>
 						<Button
 							type="submit"
-							aria-disabled={instantSubmitting || form.formState.isSubmitting}
-							onClick={() => setInstantSubmitting(true)}
+							disabled={instantSubmitting || form.formState.isSubmitting}
 							size="lg"
 							className="w-full"
 						>
-							{form.formState.isSubmitting
+							{form.formState.isSubmitting || instantSubmitting
 								? "Enviando..."
 								: "Enviar intenção de participação"}
 						</Button>
