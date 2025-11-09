@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { logger } from "@/lib/logger";
-import { ConflictError } from "@/lib/errors";
 import crypto from "crypto";
+import { ConflictError } from "@/lib/errors";
+import { logger } from "@/lib/logger";
 
 const prisma = new PrismaClient();
 
@@ -109,4 +109,3 @@ export class AdminIntentionService {
 		});
 	}
 }
-

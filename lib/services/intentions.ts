@@ -1,7 +1,10 @@
 import { PrismaClient } from "@prisma/client";
-import { createIntentionSchema, type CreateIntentionInput } from "@/lib/validation/intentions";
-import { logger } from "@/lib/logger";
 import { ConflictError } from "@/lib/errors";
+import { logger } from "@/lib/logger";
+import {
+	type CreateIntentionInput,
+	createIntentionSchema,
+} from "@/lib/validation/intentions";
 
 const prisma = new PrismaClient();
 
@@ -29,7 +32,9 @@ export class IntentionService {
 				email: validated.email,
 				intentionId: existing.id,
 			});
-			throw new ConflictError("Já existe uma intenção pendente para este email");
+			throw new ConflictError(
+				"Já existe uma intenção pendente para este email",
+			);
 		}
 
 		// Criar intenção
@@ -44,7 +49,7 @@ export class IntentionService {
 				status: "PENDING",
 			} as any, // Type assertion temporária até TypeScript reconhecer o campo
 		};
-		
+
 		const intention = await prisma.intention.create(createData);
 
 		logger.info("Intenção criada com sucesso", {
@@ -99,4 +104,3 @@ export class IntentionService {
 		return intention;
 	}
 }
-

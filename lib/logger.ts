@@ -22,11 +22,7 @@ export interface LogEntry {
  * Cria um logger estruturado
  */
 export function createLogger(requestId?: string) {
-	const log = (
-		level: LogLevel,
-		message: string,
-		context: LogContext = {},
-	) => {
+	const log = (level: LogLevel, message: string, context: LogContext = {}) => {
 		const entry: LogEntry = {
 			level,
 			message,
@@ -68,4 +64,3 @@ export const logger = createLogger();
 export function generateRequestId(): string {
 	return `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 }
-

@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import crypto from "crypto";
-import { logger } from "@/lib/logger";
 import { ConflictError } from "@/lib/errors";
+import { logger } from "@/lib/logger";
 
 const prisma = new PrismaClient();
 
@@ -122,7 +122,10 @@ export class SignupService {
 		});
 
 		if (!intention) {
-			return { found: false, reason: "Nenhuma intenção aprovada encontrada para este email" };
+			return {
+				found: false,
+				reason: "Nenhuma intenção aprovada encontrada para este email",
+			};
 		}
 
 		// Sempre gerar um novo token (não podemos recuperar o original pois é hasheado)
@@ -170,4 +173,3 @@ export class SignupService {
 		};
 	}
 }
-

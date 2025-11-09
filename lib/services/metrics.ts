@@ -110,7 +110,10 @@ export class MetricsService {
 			totalIndicacoes,
 			totalObrigados,
 			variacoes: {
-				membrosAtivos: calcularVariacao(membrosAtivos, membrosAtivosMesAnterior),
+				membrosAtivos: calcularVariacao(
+					membrosAtivos,
+					membrosAtivosMesAnterior,
+				),
 				indicacoes: calcularVariacao(indicacoesNoMes, indicacoesMesAnterior),
 				obrigados: calcularVariacao(obrigadosNoMes, obrigadosMesAnterior),
 			},
@@ -175,4 +178,3 @@ export class MetricsService {
 		};
 	}
 }
-

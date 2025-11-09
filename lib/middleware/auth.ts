@@ -3,21 +3,28 @@
  * Valida o token ADMIN_TOKEN do header Authorization
  */
 
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
 import { logger } from "@/lib/logger";
 
-const ADMIN_TOKEN = process.env.ADMIN_TOKEN;
-
-if (!ADMIN_TOKEN) {
-	logger.warn(
-		"ADMIN_TOKEN não configurado. Rotas admin não estarão protegidas.",
-	);
+function getAdminToken(): string | null {
+    const token =
+        process.env.ADMIN_TOKEN ??
+        (process.env.NODE_ENV === "test"
+            ? "dev-admin-token-change-in-production"
+            : undefined);
+    if (!token) {
+        logger.warn(
+            "ADMIN_TOKEN não configurado. Rotas admin exigirão token e retornarão 401.",
+        );
+    }
+    return token ?? null;
 }
 
 /**
  * Valida o token de administração do header Authorization
  */
 export function validateAdminToken(request: NextRequest): boolean {
+	const ADMIN_TOKEN = getAdminToken();
 	if (!ADMIN_TOKEN) {
 		return false;
 	}
@@ -41,23 +48,36 @@ export function validateAdminToken(request: NextRequest): boolean {
  * Retorna 401 se o token não for válido
  */
 export function requireAdminAuth(
-	handler: (request: NextRequest) => Promise<NextResponse>,
+    handler: (request: NextRequest) => Promise<NextResponse>,
 ) {
-	return async (request: NextRequest) => {
-		if (!validateAdminToken(request)) {
-			logger.warn("Tentativa de acesso não autorizado a rota admin", {
-				path: request.nextUrl.pathname,
-				method: request.method,
-			});
+    return async (request: NextRequest) => {
+        const varyHeader = "Authorization";
 
-			return NextResponse.json(
-				{ error: "Unauthorized", message: "Token de administração inválido" },
-				{ status: 401 },
-			);
-		}
+        if (!validateAdminToken(request)) {
+            logger.warn("Tentativa de acesso não autorizado a rota admin", {
+                path: request.nextUrl.pathname,
+                method: request.method,
+            });
 
-		return handler(request);
-	};
+            const res = NextResponse.json(
+                { error: "Unauthorized", message: "Token de administração inválido" },
+                { status: 401 },
+            );
+            res.headers.set("Cache-Control", "no-store, private");
+            res.headers.set("Vary", varyHeader);
+            return res;
+        }
+
+        const res = await handler(request);
+        // Garantir que respostas privadas não sejam cacheadas e variem por Authorization
+        try {
+            res.headers.set("Cache-Control", "no-store, private");
+            res.headers.set("Vary", varyHeader);
+        } catch {
+            // ignore if headers already sent / immutable
+        }
+        return res;
+    };
 }
 
 /**
@@ -73,4 +93,3 @@ export function getAuthToken(request: NextRequest): string | null {
 		? authHeader.substring(7)
 		: authHeader;
 }
-
