@@ -26,6 +26,7 @@ A plataforma oferece um sistema completo para gestão de grupos de networking, i
 - **Gestão de Membros**: Fluxo completo de admissão com intenções, aprovações e cadastro
 - **Dashboard**: Métricas e indicadores de desempenho do grupo
 - **Área Administrativa**: Painel para gerenciar intenções e aprovações
+- **Proteção de Rotas**: Sistema de autenticação baseado em token com proxy do Next.js 16
 - **Tema Claro/Escuro**: Interface adaptável com suporte a múltiplos temas
 
 ## 🛠 Tecnologias
@@ -120,7 +121,12 @@ ADMIN_TOKEN="dev-admin-token-change-in-production"
 
 - `DATABASE_URL`: URL de conexão com o banco de dados (SQLite para dev)
 - `NEXT_PUBLIC_BASE_URL`: URL base da aplicação (usado para gerar links)
-- `ADMIN_TOKEN`: Token de autenticação para área administrativa
+- `ADMIN_TOKEN`: Token de autenticação para área administrativa (obrigatório para acessar `/administracao` e `/dashboard`)
+
+**Importante**: O `ADMIN_TOKEN` deve ser configurado no arquivo `.env.local` (não versionado). Este token é usado para:
+- Autenticação nas rotas de API administrativas
+- Acesso às páginas `/administracao` e `/dashboard` (protegidas pelo proxy.ts)
+- Login administrativo na landing page
 
 ## ▶️ Como Executar
 
@@ -131,6 +137,17 @@ pnpm dev
 ```
 
 A aplicação estará disponível em `http://localhost:3000`
+
+### Acesso Administrativo
+
+Para acessar as áreas administrativas (`/administracao` e `/dashboard`):
+
+1. Acesse a landing page (`http://localhost:3000`)
+2. Clique no botão "Admin" no canto superior direito
+3. Insira o token configurado na variável `ADMIN_TOKEN`
+4. Após login bem-sucedido, o menu de navegação administrativa aparecerá automaticamente
+
+**Nota**: As rotas administrativas são protegidas no nível de servidor pelo `proxy.ts`. Tentativas de acesso direto sem token válido serão redirecionadas para a landing page.
 
 ### Produção
 
@@ -151,21 +168,25 @@ pnpm start
 ```
 AgSistemas-Teste/
 ├── app/                          # Next.js App Router
-│   ├── administracao/           # Área administrativa
+│   ├── administracao/           # Área administrativa (protegida)
 │   ├── api/                      # API Routes
-│   │   ├── admin/                # Rotas administrativas
+│   │   ├── admin/                # Rotas administrativas (protegidas)
 │   │   ├── intentions/           # Rotas de intenções
-│   │   └── signup/               # Rotas de cadastro
+│   │   ├── signup/               # Rotas de cadastro
+│   │   └── dashboard/            # Rotas de dashboard (protegidas)
 │   ├── cadastro/[token]/        # Página de cadastro completo
-│   ├── dashboard/                # Dashboard de métricas
+│   ├── dashboard/                # Dashboard de métricas (protegido)
 │   ├── interesse/                # Formulário de intenção
 │   ├── recuperar-link/          # Recuperação de link de cadastro
 │   ├── status-intencao/          # Consulta de status
-│   └── page.tsx                  # Landing page
+│   └── page.tsx                  # Landing page (pública)
 ├── components/                   # Componentes React reutilizáveis
+│   ├── AdminLogin.tsx            # Componente de login administrativo
+│   ├── AdminNavigation.tsx       # Menu de navegação admin (protegido)
 │   ├── forms/                    # Formulários
 │   ├── providers/                # Providers (Theme, etc)
 │   └── ui/                       # Componentes shadcn/ui
+├── proxy.ts                      # Proxy do Next.js 16 para proteção de rotas
 ├── lib/                          # Bibliotecas e utilitários
 │   ├── errors/                   # Classes de erro customizadas
 │   ├── logger/                   # Sistema de logging
@@ -205,6 +226,14 @@ AgSistemas-Teste/
 - ✅ Comparação com mês anterior
 - ✅ Visualizações com gráficos e badges de tendência
 
+#### Segurança e Autenticação
+
+- ✅ Proteção de rotas privadas via proxy.ts (Next.js 16)
+- ✅ Autenticação administrativa baseada em token (ADMIN_TOKEN)
+- ✅ Login administrativo discreto na landing page
+- ✅ Menu de navegação protegido que aparece apenas quando autenticado
+- ✅ Validação de token no nível de servidor e cliente
+
 #### Interface
 
 - ✅ Tema claro/escuro
@@ -212,6 +241,7 @@ AgSistemas-Teste/
 - ✅ Componentes acessíveis (shadcn/ui)
 - ✅ Notificações toast (Sonner)
 - ✅ Navegação intuitiva
+- ✅ Separação clara entre áreas públicas e privadas
 
 ### 🚧 Planejadas (Arquitetura)
 
