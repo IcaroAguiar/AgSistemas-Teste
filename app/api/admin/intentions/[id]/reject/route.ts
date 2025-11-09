@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { AdminIntentionService } from "@/lib/services/admin-intentions";
+import { type NextRequest, NextResponse } from "next/server";
+import { generateRequestId, logger } from "@/lib/logger";
 import { requireAdminAuth } from "@/lib/middleware/auth";
-import { logger, generateRequestId } from "@/lib/logger";
+import { AdminIntentionService } from "@/lib/services/admin-intentions";
 
 /**
  * POST /api/admin/intentions/[id]/reject
@@ -64,4 +64,3 @@ export async function POST(
 		}
 	})(request);
 }
-

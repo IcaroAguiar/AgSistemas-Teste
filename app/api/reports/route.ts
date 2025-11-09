@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { generateRequestId, logger } from "@/lib/logger";
 import { MetricsService } from "@/lib/services/metrics";
-import { logger, generateRequestId } from "@/lib/logger";
 
 /**
  * GET /api/reports?period=weekly|monthly|total
@@ -35,9 +35,11 @@ export async function GET(request: NextRequest) {
 		});
 
 		return NextResponse.json(
-			{ error: "InternalServerError", message: "Erro ao processar solicitação" },
+			{
+				error: "InternalServerError",
+				message: "Erro ao processar solicitação",
+			},
 			{ status: 500 },
 		);
 	}
 }
-

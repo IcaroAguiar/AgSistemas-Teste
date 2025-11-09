@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { SignupService } from "@/lib/services/signup";
-import { logger, generateRequestId } from "@/lib/logger";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { generateRequestId, logger } from "@/lib/logger";
+import { SignupService } from "@/lib/services/signup";
 
 const recoverSchema = z.object({
 	email: z.string().email("Email inválido"),
@@ -40,7 +40,12 @@ export async function POST(request: NextRequest) {
 			expiresAt: result.expiresAt,
 		});
 	} catch (error) {
-		if (error && typeof error === "object" && "name" in error && error.name === "ZodError") {
+		if (
+			error &&
+			typeof error === "object" &&
+			"name" in error &&
+			error.name === "ZodError"
+		) {
 			return NextResponse.json(
 				{
 					error: "ValidationError",
@@ -64,4 +69,3 @@ export async function POST(request: NextRequest) {
 		);
 	}
 }
-

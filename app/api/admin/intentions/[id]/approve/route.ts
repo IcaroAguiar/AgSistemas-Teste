@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { AdminIntentionService } from "@/lib/services/admin-intentions";
-import { requireAdminAuth } from "@/lib/middleware/auth";
-import { logger, generateRequestId } from "@/lib/logger";
+import { type NextRequest, NextResponse } from "next/server";
 import { ConflictError } from "@/lib/errors";
+import { generateRequestId, logger } from "@/lib/logger";
+import { requireAdminAuth } from "@/lib/middleware/auth";
+import { AdminIntentionService } from "@/lib/services/admin-intentions";
 
 /**
  * POST /api/admin/intentions/[id]/approve
@@ -22,7 +22,8 @@ export async function POST(
 
 			// Em produção, enviar email com token
 			// Por enquanto, retornar URL no response
-			const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+			const baseUrl =
+				process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 			const signupUrl = `${baseUrl}/cadastro/${token}`;
 
 			logger.info("Intenção aprovada", {
@@ -81,4 +82,3 @@ export async function POST(
 		}
 	})(request);
 }
-

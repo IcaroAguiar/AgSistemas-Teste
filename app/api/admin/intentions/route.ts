@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { AdminIntentionService } from "@/lib/services/admin-intentions";
-import { requireAdminAuth } from "@/lib/middleware/auth";
-import { logger, generateRequestId } from "@/lib/logger";
+import { type NextRequest, NextResponse } from "next/server";
 import { ConflictError } from "@/lib/errors";
+import { generateRequestId, logger } from "@/lib/logger";
+import { requireAdminAuth } from "@/lib/middleware/auth";
+import { AdminIntentionService } from "@/lib/services/admin-intentions";
 
 /**
  * GET /api/admin/intentions
@@ -18,11 +18,12 @@ export async function GET(request: NextRequest) {
 			return NextResponse.json(
 				intentions.map((intention) => {
 					// Converter status de uppercase (PENDING) para lowercase (pending)
-					const statusMap: Record<string, "pending" | "approved" | "rejected"> = {
-						PENDING: "pending",
-						APPROVED: "approved",
-						REJECTED: "rejected",
-					};
+					const statusMap: Record<string, "pending" | "approved" | "rejected"> =
+						{
+							PENDING: "pending",
+							APPROVED: "approved",
+							REJECTED: "rejected",
+						};
 
 					// Type assertion para incluir motivation que pode não estar no tipo gerado ainda
 					const intentionWithMotivation = intention as typeof intention & {
@@ -59,4 +60,3 @@ export async function GET(request: NextRequest) {
 		}
 	})(request);
 }
-

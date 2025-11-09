@@ -1,7 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
-import { MetricsService } from "@/lib/services/metrics";
+import { type NextRequest, NextResponse } from "next/server";
+import { generateRequestId, logger } from "@/lib/logger";
 import { requireAdminAuth } from "@/lib/middleware/auth";
-import { logger, generateRequestId } from "@/lib/logger";
+import { MetricsService } from "@/lib/services/metrics";
+
+// Rota privada: evitar qualquer cache e variar por Authorization
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 /**
  * GET /api/dashboard
@@ -14,18 +18,26 @@ export async function GET(request: NextRequest) {
 		try {
 			const metrics = await MetricsService.getDashboardMetrics();
 
-			return NextResponse.json(metrics);
+			const res = NextResponse.json(metrics);
+			res.headers.set("Cache-Control", "no-store, private");
+			res.headers.set("Vary", "Authorization");
+			return res;
 		} catch (error) {
 			logger.error("Erro ao obter métricas do dashboard", {
 				requestId,
 				error: error instanceof Error ? error.message : String(error),
 			});
 
-			return NextResponse.json(
-				{ error: "InternalServerError", message: "Erro ao processar solicitação" },
+			const res = NextResponse.json(
+				{
+					error: "InternalServerError",
+					message: "Erro ao processar solicitação",
+				},
 				{ status: 500 },
 			);
+			res.headers.set("Cache-Control", "no-store, private");
+			res.headers.set("Vary", "Authorization");
+			return res;
 		}
 	})(request);
 }
-

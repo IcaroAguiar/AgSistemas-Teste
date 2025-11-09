@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import { SignupService } from "@/lib/services/signup";
-import { logger, generateRequestId } from "@/lib/logger";
-import { ConflictError } from "@/lib/errors";
+import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { ConflictError } from "@/lib/errors";
+import { generateRequestId, logger } from "@/lib/logger";
+import { SignupService } from "@/lib/services/signup";
 
 const signupSchema = z.object({
 	token: z.string(),
@@ -47,7 +47,10 @@ export async function GET(request: NextRequest) {
 		});
 
 		return NextResponse.json(
-			{ error: "InternalServerError", message: "Erro ao processar solicitação" },
+			{
+				error: "InternalServerError",
+				message: "Erro ao processar solicitação",
+			},
 			{ status: 500 },
 		);
 	}
@@ -85,7 +88,12 @@ export async function POST(request: NextRequest) {
 			{ status: 201 },
 		);
 	} catch (error) {
-		if (error && typeof error === "object" && "name" in error && error.name === "ZodError") {
+		if (
+			error &&
+			typeof error === "object" &&
+			"name" in error &&
+			error.name === "ZodError"
+		) {
 			return NextResponse.json(
 				{ error: "ValidationError", message: "Dados inválidos" },
 				{ status: 400 },
@@ -112,9 +120,11 @@ export async function POST(request: NextRequest) {
 		});
 
 		return NextResponse.json(
-			{ error: "InternalServerError", message: "Erro ao processar solicitação" },
+			{
+				error: "InternalServerError",
+				message: "Erro ao processar solicitação",
+			},
 			{ status: 500 },
 		);
 	}
 }
-

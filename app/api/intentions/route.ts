@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import { IntentionService } from "@/lib/services/intentions";
-import { logger, generateRequestId } from "@/lib/logger";
+import { type NextRequest, NextResponse } from "next/server";
 import { ConflictError } from "@/lib/errors";
+import { generateRequestId, logger } from "@/lib/logger";
+import { IntentionService } from "@/lib/services/intentions";
 
 /**
  * POST /api/intentions
@@ -54,7 +54,12 @@ export async function POST(request: NextRequest) {
 		}
 
 		// Verificar erro de validação Zod
-		if (error && typeof error === "object" && "name" in error && error.name === "ZodError") {
+		if (
+			error &&
+			typeof error === "object" &&
+			"name" in error &&
+			error.name === "ZodError"
+		) {
 			logger.warn("Erro de validação ao criar intenção", {
 				requestId,
 				error: error instanceof Error ? error.message : String(error),
@@ -84,4 +89,3 @@ export async function POST(request: NextRequest) {
 		);
 	}
 }
-

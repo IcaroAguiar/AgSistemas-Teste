@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import { z } from "zod";
+import { generateRequestId, logger } from "@/lib/logger";
 import { IntentionService } from "@/lib/services/intentions";
 import { SignupService } from "@/lib/services/signup";
-import { logger, generateRequestId } from "@/lib/logger";
-import { z } from "zod";
 
 const checkStatusSchema = z.object({
 	email: z.string().email("Email inválido"),
@@ -19,7 +19,9 @@ export async function POST(request: NextRequest) {
 		const body = await request.json();
 		const validated = checkStatusSchema.parse(body);
 
-		const intention = await IntentionService.getIntentionByEmail(validated.email);
+		const intention = await IntentionService.getIntentionByEmail(
+			validated.email,
+		);
 
 		if (!intention) {
 			return NextResponse.json(
@@ -43,9 +45,11 @@ export async function POST(request: NextRequest) {
 		// Se aprovada, tentar recuperar/gerar link de cadastro
 		let signupUrl: string | null = null;
 		if (status === "approved") {
-			const recoverResult = await SignupService.recoverSignupLink(validated.email);
+			const recoverResult = await SignupService.recoverSignupLink(
+				validated.email,
+			);
 			if (recoverResult.found) {
-				signupUrl = recoverResult.url;
+				signupUrl = recoverResult.url ?? null;
 			}
 		}
 
@@ -60,13 +64,18 @@ export async function POST(request: NextRequest) {
 			name: intention.name,
 			email: intention.email,
 			company: intention.company,
-			reason: intention.reason,
+			reason: intention.reason ?? null,
 			signupUrl,
 			createdAt: intention.createdAt.toISOString(),
 			updatedAt: intention.updatedAt.toISOString(),
 		});
 	} catch (error) {
-		if (error && typeof error === "object" && "name" in error && error.name === "ZodError") {
+		if (
+			error &&
+			typeof error === "object" &&
+			"name" in error &&
+			error.name === "ZodError"
+		) {
 			return NextResponse.json(
 				{
 					error: "ValidationError",
@@ -90,4 +99,3 @@ export async function POST(request: NextRequest) {
 		);
 	}
 }
-
