@@ -44,6 +44,47 @@ graph TD
   ambiente de teste)
 - Geração de convite com token (hash armazenado) e cadastro completo do membro
 
+### 3.1.1 Estado atual do MVP — Gestão de Membros
+
+O código entregue implementa apenas o fluxo de Admissão de Membros. A árvore
+de páginas e rotas carregadas na aplicação hoje é mostrada abaixo para alinhar o
+“mapa” com o que está de fato disponível:
+
+```
+app/
+├── page.tsx                         # landing com CTAs para interesse, status, admin e dashboard
+├── interesse/page.tsx               # formulário público de intenção
+├── status-intencao/page.tsx         # consulta de status de intenção
+├── recuperar-link/page.tsx          # regeneração de link de cadastro
+├── cadastro/[token]/page.tsx        # cadastro completo com token
+├── administracao/page.tsx           # área admin para listar/aprovar/rejeitar intenções
+├── dashboard/page.tsx               # KPIs protegidos por Authorization
+└── api/
+    ├── intentions/route.ts
+    ├── intentions/status/route.ts
+    ├── admin/intentions/route.ts
+    ├── admin/intentions/[id]/approve/route.ts
+    ├── admin/intentions/[id]/reject/route.ts
+    ├── signup/validate/route.ts
+    ├── signup/recover/route.ts
+    ├── signup/route.ts
+    ├── dashboard/route.ts
+    └── reports/route.ts
+```
+
+Os componentes reutilizáveis são centralizados em `components/*` (formulário
+`IntentionForm`, UI kit shadcn). A API de dashboard/aprovação usa o middleware de
+token (`requireAdminAuth`) e todos os endpoints privados enviam `Cache-Control:
+no-store` + `Vary: Authorization` para evitar respostas cacheadas com bearer.
+
+### 3.1.2 Escopo do MVP versus visões futuras
+
+Os itens listados nas subseções 3.2‑3.5 (avisos/meetings/referrals/finanças)
+são parte da visão completa, mas **ainda não foram implementados** neste
+repositório — eles permanecem como hotspots para fases futuras. Hoje o código
+da entrega cobre apenas intenções, aprovação/rejeição, geração/validação de
+convite e dashboard privado.
+
 ### 3.2 Comunicação e Engajamento
 
 - Avisos/Comunicados: lista de anúncios visíveis para membros; CRUD para admin
