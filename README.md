@@ -31,6 +31,7 @@ A plataforma oferece um sistema completo para gestão de grupos de networking, i
 ## 🛠 Tecnologias
 
 ### Frontend
+
 - **Next.js 16** (App Router)
 - **React 19.2**
 - **TypeScript**
@@ -42,12 +43,14 @@ A plataforma oferece um sistema completo para gestão de grupos de networking, i
 - **next-themes** (gerenciamento de temas)
 
 ### Backend
+
 - **Next.js API Routes**
 - **Node.js 20 LTS**
 - **Prisma ORM**
 - **SQLite** (desenvolvimento) / **PostgreSQL** (produção recomendada)
 
 ### Ferramentas de Desenvolvimento
+
 - **pnpm** (gerenciador de pacotes)
 - **Biome** (linter e formatter)
 - **Jest** (testes)
@@ -188,6 +191,7 @@ AgSistemas-Teste/
 ### ✅ Implementadas
 
 #### Gestão de Membros
+
 - ✅ Formulário público de intenção de participação
 - ✅ Área administrativa para aprovar/recusar intenções
 - ✅ Formulário de cadastro completo com token seguro
@@ -195,12 +199,14 @@ AgSistemas-Teste/
 - ✅ Recuperação de link de cadastro
 
 #### Dashboard
+
 - ✅ Dashboard privado com métricas do grupo
 - ✅ Indicadores de desempenho (membros ativos, indicações, obrigados)
 - ✅ Comparação com mês anterior
 - ✅ Visualizações com gráficos e badges de tendência
 
 #### Interface
+
 - ✅ Tema claro/escuro
 - ✅ Design responsivo
 - ✅ Componentes acessíveis (shadcn/ui)
@@ -301,4 +307,3 @@ Desenvolvido como parte de teste técnico para AgSistemas.
 - Monitoramento e observabilidade
 - Testes de carga e performance
 - CI/CD pipeline
-
