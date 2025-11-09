@@ -12,16 +12,16 @@ const config: Config = {
 	},
 	testPathIgnorePatterns: ["<rootDir>/.next/", "<rootDir>/node_modules/"],
 	// Configurar ambiente por arquivo de teste
-	testMatch: [
-		"**/__tests__/**/*.[jt]s?(x)",
-		"**/?(*.)+(spec|test).[jt]s?(x)",
-	],
+	testMatch: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
 	// Usar node para testes de API (contract tests)
 	projects: [
 		{
 			displayName: "dom",
 			testEnvironment: "jest-environment-jsdom",
-			testMatch: ["**/integration/**/*.spec.[jt]s?(x)", "**/unit/**/*.spec.[jt]s?(x)"],
+			testMatch: [
+				"**/integration/**/*.spec.[jt]s?(x)",
+				"**/unit/**/*.spec.[jt]s?(x)",
+			],
 			moduleDirectories: ["node_modules", "<rootDir>/"],
 			moduleNameMapper: {
 				"^@/(.*)$": "<rootDir>/$1",
@@ -40,10 +40,13 @@ const config: Config = {
 				"^@/(.*)$": "<rootDir>/$1",
 			},
 			transform: {
-				"^.+\\.(ts|tsx)$": ["ts-jest", { 
-					tsconfig: "tsconfig.json",
-					useESM: false,
-				}],
+				"^.+\\.(ts|tsx)$": [
+					"ts-jest",
+					{
+						tsconfig: "tsconfig.json",
+						useESM: false,
+					},
+				],
 			},
 		},
 	],
