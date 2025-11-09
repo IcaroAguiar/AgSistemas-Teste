@@ -22,13 +22,13 @@ Membros), porém a arquitetura é pensada para o sistema completo e escalável.
 
 ```mermaid
 graph TD
-  subgraph WebApp [Next.js App]
-    UI[App Router (Páginas & Componentes)]
-    API[API Routes (/api/*)]
+  subgraph WebApp ["Next.js App"]
+    UI["App Router (Páginas e Componentes)"]
+    API["API Routes (/api/*)"]
   end
 
-  DB[(DB: SQLite dev / PostgreSQL prod)]
-  Queue[(Opcional Futuro: Fila de Emails)]
+  DB[("DB: SQLite dev / PostgreSQL prod")]
+  Queue[("Opcional Futuro: Fila de Emails")]
 
   UI -->|HTTP| API
   API -->|Prisma| DB
