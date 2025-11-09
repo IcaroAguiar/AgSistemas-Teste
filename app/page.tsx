@@ -1,5 +1,7 @@
 import Link from "next/link";
 
+import { AdminLogin } from "@/components/AdminLogin";
+import { AdminNavigation } from "@/components/AdminNavigation";
 import { Logo } from "@/components/Logo";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { Button } from "@/components/ui/button";
@@ -14,8 +16,10 @@ import {
 export default function Page() {
 	return (
 		<main className="flex flex-1 flex-col gap-16 px-6 py-16 sm:px-10 lg:px-16">
-			{/* Header com toggle de tema */}
-			<div className="flex justify-end">
+			{/* Header discreto com navegação admin e toggle de tema */}
+			<div className="flex items-center justify-end gap-2">
+				<AdminNavigation />
+				<AdminLogin />
 				<ThemeToggle />
 			</div>
 
@@ -61,7 +65,7 @@ export default function Page() {
 							</li>
 							<li className="flex items-start gap-2">
 								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
-								<span>Painel admin para aprovar/recusar</span>
+								<span>Processo de aprovação transparente</span>
 							</li>
 							<li className="flex items-start gap-2">
 								<span className="mt-1 h-2 w-2 rounded-full bg-primary" />
@@ -70,7 +74,7 @@ export default function Page() {
 						</ul>
 						<div className="mt-4">
 							<Button variant="outline" size="sm" asChild>
-								<Link href="/interesse">Ver mais</Link>
+								<Link href="/interesse">Expressar Interesse</Link>
 							</Button>
 						</div>
 					</CardContent>
@@ -123,11 +127,6 @@ export default function Page() {
 								<span>Mensalidades com cobrança</span>
 							</li>
 						</ul>
-						<div className="mt-4">
-							<Button variant="outline" size="sm" asChild>
-								<Link href="/dashboard">Ver Dashboard</Link>
-							</Button>
-						</div>
 					</CardContent>
 				</Card>
 			</section>
@@ -141,70 +140,40 @@ export default function Page() {
 					<p className="mt-2 text-muted-foreground">
 						Principais funcionalidades da plataforma
 					</p>
-					<div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+					<div className="mt-6 grid gap-4 sm:grid-cols-2">
 						<Button
 							variant="outline"
-							className="h-full flex-col items-start justify-start p-4 text-left"
+							className="h-full flex-col items-start justify-start p-6 text-left hover:bg-accent transition-colors"
 							asChild
 						>
 							<Link
 								href="/interesse"
-								className="w-full h-full flex flex-col items-start"
+								className="w-full h-full flex flex-col items-start gap-2"
 							>
-								<span className="font-semibold block mb-1">
+								<span className="font-semibold text-lg">
 									Expressar Interesse
 								</span>
-								<span className="text-xs text-muted-foreground block">
-									Preencha o formulário para participar
+								<span className="text-sm text-muted-foreground">
+									Preencha o formulário para expressar seu interesse em fazer
+									parte do nosso grupo de networking
 								</span>
 							</Link>
 						</Button>
 						<Button
 							variant="outline"
-							className="h-full flex-col items-start justify-start p-4 text-left"
+							className="h-full flex-col items-start justify-start p-6 text-left hover:bg-accent transition-colors"
 							asChild
 						>
 							<Link
 								href="/status-intencao"
-								className="w-full h-full flex flex-col items-start"
+								className="w-full h-full flex flex-col items-start gap-2"
 							>
-								<span className="font-semibold block mb-1">
+								<span className="font-semibold text-lg">
 									Status da Intenção
 								</span>
-								<span className="text-xs text-muted-foreground block">
-									Consulte se foi aprovado e acesse o link
-								</span>
-							</Link>
-						</Button>
-						<Button
-							variant="outline"
-							className="h-full flex-col items-start justify-start p-4 text-left"
-							asChild
-						>
-							<Link
-								href="/administracao"
-								className="w-full h-full flex flex-col items-start"
-							>
-								<span className="font-semibold block mb-1">
-									Área Administrativa
-								</span>
-								<span className="text-xs text-muted-foreground block">
-									Gerencie intenções e aprovações
-								</span>
-							</Link>
-						</Button>
-						<Button
-							variant="outline"
-							className="h-full flex-col items-start justify-start p-4 text-left"
-							asChild
-						>
-							<Link
-								href="/dashboard"
-								className="w-full h-full flex flex-col items-start"
-							>
-								<span className="font-semibold block mb-1">Dashboard</span>
-								<span className="text-xs text-muted-foreground block">
-									Área privada - Requer autenticação
+								<span className="text-sm text-muted-foreground">
+									Consulte o status da sua intenção e acesse o link de cadastro
+									se aprovado
 								</span>
 							</Link>
 						</Button>
