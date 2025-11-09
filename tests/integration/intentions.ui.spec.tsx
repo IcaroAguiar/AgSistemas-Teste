@@ -152,7 +152,7 @@ describe("Integration: Submeter intenção via UI", () => {
 		// Verificar que o botão está desabilitado OU mostra "Enviando..."
 		// (o estado pode não estar sincronizado imediatamente, mas um dos dois deve acontecer)
 		await waitFor(() => {
-			const isDisabled = submitButton.disabled;
+			const isDisabled = (submitButton as HTMLButtonElement).disabled;
 			const showsLoading = screen.queryByText(/enviando/i) !== null;
 			expect(isDisabled || showsLoading).toBe(true);
 		}, { timeout: 3000 });
