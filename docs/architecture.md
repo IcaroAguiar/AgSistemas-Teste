@@ -52,12 +52,12 @@ de páginas e rotas carregadas na aplicação hoje é mostrada abaixo para alinh
 
 ```
 app/
-├── page.tsx                         # landing com CTAs para interesse, status, admin e dashboard
+├── page.tsx                         # landing pública com CTAs para interesse e status
 ├── interesse/page.tsx               # formulário público de intenção
 ├── status-intencao/page.tsx         # consulta de status de intenção
 ├── recuperar-link/page.tsx          # regeneração de link de cadastro
 ├── cadastro/[token]/page.tsx        # cadastro completo com token
-├── administracao/page.tsx           # área admin para listar/aprovar/rejeitar intenções
+├── administracao/page.tsx           # área admin para listar/aprovar/rejeitar intenções (protegida)
 ├── dashboard/page.tsx               # KPIs protegidos por Authorization
 └── api/
     ├── intentions/route.ts
@@ -71,6 +71,15 @@ app/
     ├── dashboard/route.ts
     └── reports/route.ts
 ```
+
+**Componentes de Autenticação:**
+- `components/AdminLogin.tsx`: Componente discreto para login administrativo na landing page
+- `components/AdminNavigation.tsx`: Menu de navegação que aparece apenas quando autenticado
+
+**Proteção de Rotas:**
+- `proxy.ts`: Proxy do Next.js 16 que protege rotas `/administracao` e `/dashboard` no nível de servidor
+- Valida token ADMIN_TOKEN via cookie ou header Authorization
+- Redireciona usuários não autenticados para landing page
 
 Os componentes reutilizáveis são centralizados em `components/*` (formulário
 `IntentionForm`, UI kit shadcn). A API de dashboard/aprovação usa o middleware de
@@ -292,6 +301,9 @@ dark mode e temas, usar next-themes conforme docs do shadcn/ui.
 
 - Avaliação: `ADMIN_TOKEN` (Bearer) para endpoints admin; rate-limit básico em
   rotas públicas.
+- Proteção de rotas: `proxy.ts` (Next.js 16) protege `/administracao` e `/dashboard` no nível de servidor
+- Autenticação: Login administrativo discreto na landing page via componente `AdminLogin`
+- Validação: Token validado via cookie (páginas) ou header Authorization (APIs)
 - Produção: migrar para autenticação real (NextAuth/JWT), RBAC com papéis
   (admin, member). Proteção CSRF nas ações sensíveis.
 - Segredos em `.env.local` (não versionado).
