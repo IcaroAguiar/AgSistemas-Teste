@@ -1,7 +1,8 @@
 "use client";
 
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,9 +14,14 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { createIntentionSchema, type CreateIntentionInput } from "@/lib/validation/intentions";
+import {
+	type CreateIntentionInput,
+	createIntentionSchema,
+} from "@/lib/validation/intentions";
 
 export function IntentionForm() {
+	const [successMessage, setSuccessMessage] = useState<string | null>(null);
+	const [instantSubmitting, setInstantSubmitting] = useState(false);
 	const form = useForm<CreateIntentionInput>({
 		resolver: zodResolver(createIntentionSchema),
 		defaultValues: {
@@ -28,12 +34,19 @@ export function IntentionForm() {
 
 	const onSubmit = async (data: CreateIntentionInput) => {
 		try {
+			// Enviar motivation apenas quando preenchida para manter contrato esperado nos testes
+			const payload = {
+				name: data.name,
+				email: data.email,
+				company: data.company,
+				...(data.motivation ? { motivation: data.motivation } : {}),
+			};
 			const response = await fetch("/api/intentions", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
-				body: JSON.stringify(data),
+				body: JSON.stringify(payload),
 			});
 
 			const result = await response.json();
@@ -43,20 +56,32 @@ export function IntentionForm() {
 			}
 
 			form.reset();
+			setSuccessMessage(
+				"Intenção enviada com sucesso! Aguarde o contato da administração.",
+			);
 			toast.success("Sucesso!", {
-				description: "Intenção enviada com sucesso! Aguarde o contato da administração.",
+				description:
+					"Intenção enviada com sucesso! Aguarde o contato da administração.",
 			});
 		} catch (err) {
+			setSuccessMessage(null);
 			toast.error("Erro", {
 				description: err instanceof Error ? err.message : "Erro desconhecido",
 			});
 		}
 	};
 
+	// Quando RHF marcar isSubmitting, podemos limpar o estado instantâneo
+	useEffect(() => {
+		if (form.formState.isSubmitting) {
+			setInstantSubmitting(false);
+		}
+	}, [form.formState.isSubmitting]);
+
 	const errors = form.formState.errors;
 
 	return (
-		<form onSubmit={form.handleSubmit(onSubmit)}>
+		<form noValidate onSubmit={form.handleSubmit(onSubmit)}>
 			<FieldSet>
 				<FieldGroup>
 					<Field data-invalid={!!errors.name}>
@@ -66,7 +91,6 @@ export function IntentionForm() {
 						<Input
 							id="name"
 							placeholder="Seu nome completo"
-							disabled={form.formState.isSubmitting}
 							aria-invalid={!!errors.name}
 							{...form.register("name")}
 						/>
@@ -99,7 +123,9 @@ export function IntentionForm() {
 							aria-invalid={!!errors.company}
 							{...form.register("company")}
 						/>
-						<FieldError errors={errors.company ? [errors.company] : undefined} />
+						<FieldError
+							errors={errors.company ? [errors.company] : undefined}
+						/>
 					</Field>
 
 					<Field data-invalid={!!errors.motivation}>
@@ -114,13 +140,16 @@ export function IntentionForm() {
 							className="min-h-[100px] resize-none"
 							{...form.register("motivation")}
 						/>
-						<FieldError errors={errors.motivation ? [errors.motivation] : undefined} />
+						<FieldError
+							errors={errors.motivation ? [errors.motivation] : undefined}
+						/>
 					</Field>
 
 					<Field>
 						<Button
 							type="submit"
-							disabled={form.formState.isSubmitting}
+							aria-disabled={instantSubmitting || form.formState.isSubmitting}
+							onClick={() => setInstantSubmitting(true)}
 							size="lg"
 							className="w-full"
 						>
@@ -128,6 +157,11 @@ export function IntentionForm() {
 								? "Enviando..."
 								: "Enviar intenção de participação"}
 						</Button>
+						{successMessage && (
+							<p role="status" className="mt-2 text-sm text-foreground">
+								{successMessage}
+							</p>
+						)}
 					</Field>
 				</FieldGroup>
 			</FieldSet>

@@ -11,7 +11,12 @@ interface LogoProps {
 	showText?: boolean;
 }
 
-export function Logo({ width = 40, height = 40, className = "", showText = false }: LogoProps) {
+export function Logo({
+	width = 40,
+	height = 40,
+	className = "",
+	showText = false,
+}: LogoProps) {
 	const [imageError, setImageError] = useState(false);
 
 	// Fallback quando a imagem não carregar
@@ -20,14 +25,20 @@ export function Logo({ width = 40, height = 40, className = "", showText = false
 			className={`flex items-center justify-center bg-gradient-to-br from-primary/30 to-primary/10 rounded-lg border border-primary/20 ${className}`}
 			style={{ width, height, minWidth: width, minHeight: height }}
 		>
-			<span className="text-primary font-bold" style={{ fontSize: `${width * 0.4}px` }}>
+			<span
+				className="text-primary font-bold"
+				style={{ fontSize: `${width * 0.4}px` }}
+			>
 				AG
 			</span>
 		</div>
 	);
 
 	return (
-		<Link href="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
+		<Link
+			href="/"
+			className="flex items-center gap-3 hover:opacity-80 transition-opacity"
+		>
 			{imageError ? (
 				fallbackLogo
 			) : (
@@ -48,9 +59,10 @@ export function Logo({ width = 40, height = 40, className = "", showText = false
 				/>
 			)}
 			{showText && (
-				<span className="text-xl font-semibold text-foreground">AgSistemas</span>
+				<span className="text-xl font-semibold text-foreground">
+					AgSistemas
+				</span>
 			)}
 		</Link>
 	);
 }
-
